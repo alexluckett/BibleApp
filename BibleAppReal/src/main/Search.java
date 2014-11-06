@@ -1,5 +1,5 @@
 package main;
 
-public class search {
+public class Search {
 	
 }
