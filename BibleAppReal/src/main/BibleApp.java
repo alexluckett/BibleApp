@@ -2,10 +2,10 @@ package main;
 
 import java.util.Collection;
 
-public class Book {
-	private Collection<Chapter> chapters;
+public class BibleApp {
+	private Collection<Chapter> books;
 	
-	public Book() {
+	public BibleApp() {
 		// TODO Auto-generated constructor stub
 	}
 }
