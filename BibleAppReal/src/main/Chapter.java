@@ -1,27 +1,27 @@
 package main;
 
-import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Chapter {
-	private String title;
-	private String description;
-	private Collection<Verse> verses;
+	private int chapterNumber;
+	private List<Verse> verses;
 	
-	public Chapter(String title, String description) {
-		this.title = title;
-		this.description = description;
+	public Chapter(int chapterNumber) {
+		this.chapterNumber = chapterNumber;
+		this.verses = new LinkedList<Verse>();
 	}
 	
-	public String getDescription() {
-		return description;
+	public int getChapterNumber() {
+		return chapterNumber;
 	}
 	
-	public String getTitle() {
-		return title;
-	}
-	
-	public Collection<Verse> getVerses() {
+	public List<Verse> getVerses() {
 		return verses;
 	}
 	
+	public void addVerse(Verse verse) {
+		verses.add(verse);
+	}
+		
 }

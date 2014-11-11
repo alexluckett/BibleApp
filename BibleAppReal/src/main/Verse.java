@@ -1,10 +1,12 @@
 package main;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Verse {
 	private int verseNumber;
-	private Collection<String> words;
+	private List<String> words = new LinkedList<String>();
 	
 	public Verse(int verseNumber) {
 		this.verseNumber = verseNumber;
