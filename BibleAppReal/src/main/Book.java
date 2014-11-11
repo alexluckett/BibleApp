@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class Book {
-	private String title;
+	private final String title;
 	private String description;
-	private Collection<Chapter> chapters = new LinkedList<Chapter>();
+	private Collection<Verse> verses = new LinkedList<Verse>();
 	
 	public Book(String title) {
 		this.title = title;
@@ -25,12 +25,12 @@ public class Book {
 		return title;
 	}
 	
-	public Collection<Chapter> getChapters() {
-		return chapters;
+	public Collection<Verse> getVerses() {
+		return verses;
 	}
 	
-	public void addChapter(Chapter chapter) {
-		chapters.add(chapter);
+	public void addVerse(Verse chapter) {
+		verses.add(chapter);
 	}
 	
 }

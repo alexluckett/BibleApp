@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class BibleApp {
 	
-	public BibleApp() { };
+	public BibleApp() { }
 	
 	public static void main(String[] args) {
 		readInFile();
@@ -32,19 +32,14 @@ public class BibleApp {
 			int lineNumber = 2;
 			
 			int chapterNumber = 1;
-			Chapter chapter = new Chapter(chapterNumber);
 			
 			while(newLine != null) {
-				if(newLine.startsWith("CHAPTER")) {
-					if(chapterNumber != 1)
-						book.addChapter(chapter); // submit chapter
-					
-					chapter = new Chapter(chapterNumber);
+				if(newLine.startsWith("CHAPTER")) {			
 					chapterNumber++;
 				} else if(newLine.equals("")) {
 					
 				} else {
-					chapter.addVerse(parseVerse(newLine, lineNumber));
+					book.addVerse(parseVerse(newLine, lineNumber, chapterNumber));
 				}
 				
 				newLine = reader.readLine();
@@ -61,11 +56,11 @@ public class BibleApp {
 			System.out.println("============");
 			System.out.println("Title      : " + book.getTitle());
 			System.out.println("Description: " + book.getDescription());
-			System.out.println("Chapters   : " + book.getChapters().size() + " total");
+			System.out.println("Verses   : " + book.getVerses().size() + " total");
 			
-			for(Chapter bookChapter : book.getChapters()) {
-				System.out.println("Chapter   " + bookChapter.getChapterNumber() + ": " + bookChapter.getVerses().size() + " verse(s)");
-			}
+//			for(Verse bookVerse : book.getVerses()) {
+//				System.out.println("Chapter " + bookVerse.getChapterNumber() + ", verse " + bookVerse.getVerseNumber());
+//			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -75,11 +70,10 @@ public class BibleApp {
 		}
 	}
 	
-	private static Verse parseVerse(String line, int verseNumber) throws ParseException {
-		String strVerseNumber = String.valueOf(verseNumber);
-		String verseContent = line.substring(strVerseNumber.length()-1);
+	private static Verse parseVerse(String line, int verseNumber, int chapterNumber) throws ParseException {		
+		String verseContent = line.substring(line.indexOf(" "));
 		
-		Verse verse = new Verse(verseNumber);
+		Verse verse = new Verse(verseNumber, chapterNumber);
 		verse.addWord(verseContent);
 		
 		System.out.println("Verse " + verseNumber + " parsed.");
