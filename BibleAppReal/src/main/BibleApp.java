@@ -64,10 +64,9 @@ public class BibleApp {
 			System.out.println("Chapters   : " + book.getChapters().size() + " total");
 			
 			for(Chapter bookChapter : book.getChapters()) {
-			System.out.println("Verse " + bookChapter.getChapterNumber() + ": " + bookChapter.getVerses().size() + " verse(s)");
+			System.out.println("Chapter   " + bookChapter.getChapterNumber() + ": " + bookChapter.getVerses().size() + " verse(s)");
 			}
-
-						
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
