@@ -22,7 +22,7 @@ public class BibleApp {
 	
 	private static void readInFile() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("1Chronicles.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("1Kings.txt"));
 						
 			long startTime = System.currentTimeMillis();
 			
@@ -55,12 +55,11 @@ public class BibleApp {
 			System.out.println("Book 1");
 			System.out.println("============");
 			System.out.println("Title      : " + book.getTitle());
-			System.out.println("Description: " + book.getDescription());
 			System.out.println("Verses   : " + book.getVerses().size() + " total");
 			
-//			for(Verse bookVerse : book.getVerses()) {
-//				System.out.println("Chapter " + bookVerse.getChapterNumber() + ", verse " + bookVerse.getVerseNumber());
-//			}
+			for(Verse bookVerse : book.getVerses()) {
+				System.out.println("Chapter " + bookVerse.getChapterNumber() + ", verse " + bookVerse.getVerseNumber());
+			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
