@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 public class BibleApp {
 	
-	private static String[] books = {"1John.txt", "2Kings.txt", "3John.txt"};
+	private static String[] books = {"1John.txt", "2Kings.txt", "3John.txt", "Colossians.txt", "1Timothy.txt", "Exodus.txt","1Chronicles.txt", "Amos.txt", "Hosea.txt" };
 	
 	public BibleApp() { }
 	
