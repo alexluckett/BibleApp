@@ -14,39 +14,52 @@ import java.util.Collection;
  *
  */
 public class BibleApp {
-
+	
+	private static String[] books = {"1John.txt", "2Kings.txt", "3John.txt"};
+	
 	public BibleApp() { }
 	
 	public static void main(String[] args) {
-		readInFile();
+		
+		long startTime = System.currentTimeMillis();
+		
+		for(int i = 0; i < books.length; i++){
+			readInFile(books[i]);
+		}
+		
+		long endTime = System.currentTimeMillis();
+				
+		System.out.println("Total Time: " + (endTime - startTime) + " milliseconds");
 	}
 	
-	private static void readInFile() {
+	private static void readInFile(String fileName) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("1Kings.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 						
 			long startTime = System.currentTimeMillis();
 			
 			Book book = new Book(reader.readLine()); // first line is always the book title
 			
 			String newLine = reader.readLine();
-			int lineNumber = 2;
+			int verseNumber = 1;
 			
 			int chapterNumber = 0;
 			
 			while(newLine != null) {
 				if(newLine.startsWith("CHAPTER")) {			
 					chapterNumber++;
+					verseNumber = 1;
 				} else if(!newLine.equals("")) {
-					book.addVerse(parseVerse(newLine, lineNumber, chapterNumber));
+					book.addVerse(parseVerse(newLine, verseNumber, chapterNumber));
+					verseNumber++;
 				}
 				
 				newLine = reader.readLine();
-				lineNumber++;
+				
 			}
 			
 			long endTime = System.currentTimeMillis();
-			
+			/**
 			System.out.println("Total time for 1 book: " + (endTime - startTime) + " milliseconds.");
 			System.out.println();
 			System.out.println();
@@ -61,6 +74,7 @@ public class BibleApp {
 			}
 			
 			System.out.println("Total time for 1 book: " + (endTime - startTime) + " milliseconds.");
+			*/
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
