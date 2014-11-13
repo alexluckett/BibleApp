@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -54,8 +55,13 @@ public class BibleApp {
 			
 			while(nextLine != null) {
 				if(nextLine.startsWith("CHAPTER") || nextLine.startsWith("PSALM")) {			
-					chapterNumber++;
-					verseNumber = 1;
+						chapterNumber++;
+						verseNumber = 1;
+//Currently not working *-----------------------------------
+				} else if(nextLine.startsWith("\\d")){
+					System.out.println(nextLine);
+					System.out.println("DESCRIPTION FOUND");
+//---------------------------------------------------------*		
 				} else if(!nextLine.equals("")) {
 					book.addVerse(parseVerse(nextLine, verseNumber, chapterNumber));
 					verseNumber++;
@@ -65,9 +71,25 @@ public class BibleApp {
 			}
 			
 			parsedBooks.add(book);
+			reader.close();
 		} catch (Exception e) {
-			System.err.println("Error reading bible files. Please ensure package is up to date.");
+			System.err.println("Error reading bible files. Please ensure package is up to date.\n");
 			//e.printStackTrace();
+		}
+	}
+	
+	private void search(String statementToSearch){
+		//Cycling through books
+		for(int i = 0; i < parsedBooks.size(); i++){
+			//Cycling through verses
+			for(int r = 0; i < parsedBooks.get(r).getVerses().size(); i++){
+				
+				Collection<Verse> verses = parsedBooks.get(r).getVerses();
+				
+				//if(parsedBooks.get(r).getVerses().)){
+					
+				//}
+			}
 		}
 	}
 	
