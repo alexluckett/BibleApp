@@ -1,10 +1,10 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Collection;
 
 /**
  * Completely unoptimised at this point. Did as a very basic concept of reading in the files.
@@ -15,7 +15,9 @@ import java.util.Collection;
  */
 public class BibleApp {
 	
-	private static String[] books = {"1John.txt", "2Kings.txt", "3John.txt", "Colossians.txt", "1Timothy.txt", "Exodus.txt","1Chronicles.txt", "Amos.txt", "Hosea.txt" };
+	private static File destinationFolder = new File("data");
+	private static File[] bookNames = destinationFolder.listFiles();
+	//private static String[] books = {"1John.txt", "2Kings.txt", "3John.txt", "Colossians.txt", "1Timothy.txt", "Exodus.txt","1Chronicles.txt", "Amos.txt", "Hosea.txt" };
 	
 	public BibleApp() { }
 	
@@ -23,9 +25,13 @@ public class BibleApp {
 		
 		long startTime = System.currentTimeMillis();
 		
-		for(int i = 0; i < books.length; i++){
-			readInFile(books[i]);
+		for(int i = 0; i < bookNames[i].length(); i++){
+			readInFile(bookNames[i].getName());
 		}
+		
+		//for(int i = 0; i < books.length; i++){
+			//readInFile(books[i]);
+		//}
 		
 		long endTime = System.currentTimeMillis();
 				
@@ -34,8 +40,8 @@ public class BibleApp {
 	
 	private static void readInFile(String fileName) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
-						
+			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
+			System.out.println("Current Book: " + fileName);				
 			long startTime = System.currentTimeMillis();
 			
 			Book book = new Book(reader.readLine()); // first line is always the book title
@@ -59,22 +65,6 @@ public class BibleApp {
 			}
 			
 			long endTime = System.currentTimeMillis();
-			/**
-			System.out.println("Total time for 1 book: " + (endTime - startTime) + " milliseconds.");
-			System.out.println();
-			System.out.println();
-			
-			System.out.println("Book 1");
-			System.out.println("============");
-			System.out.println("Title      : " + book.getTitle());
-			System.out.println("Verses   : " + book.getVerses().size() + " total");
-			
-			for(Verse bookVerse : book.getVerses()) {
-				System.out.println("Chapter " + bookVerse.getChapterNumber() + ", verse " + bookVerse.getVerseNumber());
-			}
-			
-			System.out.println("Total time for 1 book: " + (endTime - startTime) + " milliseconds.");
-			*/
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -90,7 +80,7 @@ public class BibleApp {
 		Verse verse = new Verse(verseNumber, chapterNumber);
 		verse.addWord(verseContent);
 		
-		System.out.println("Verse " + verseNumber + " parsed.");
+		//System.out.println("Verse " + verseNumber + " parsed.");
 		
 		return verse;
 	}
