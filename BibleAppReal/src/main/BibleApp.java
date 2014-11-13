@@ -26,6 +26,7 @@ public class BibleApp {
 		long startTime = System.currentTimeMillis();
 		
 		for(int i = 0; i < bookNames[i].length(); i++){
+			System.out.println("Current Book: " + bookNames[i].getName());
 			readInFile(bookNames[i].getName());
 		}
 		
@@ -41,7 +42,7 @@ public class BibleApp {
 	private static void readInFile(String fileName) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
-			System.out.println("Current Book: " + fileName);				
+			System.out.println("Processing: " + fileName);				
 			long startTime = System.currentTimeMillis();
 			
 			Book book = new Book(reader.readLine()); // first line is always the book title
@@ -52,7 +53,7 @@ public class BibleApp {
 			int chapterNumber = 0;
 			
 			while(newLine != null) {
-				if(newLine.startsWith("CHAPTER")) {			
+				if(newLine.startsWith("CHAPTER") || newLine.startsWith("PSALM")) {			
 					chapterNumber++;
 					verseNumber = 1;
 				} else if(!newLine.equals("")) {
@@ -61,7 +62,7 @@ public class BibleApp {
 				}
 				
 				newLine = reader.readLine();
-				
+
 			}
 			
 			long endTime = System.currentTimeMillis();
