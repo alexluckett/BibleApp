@@ -72,10 +72,7 @@ public class BibleApp {
 	}
 	
 	private static Verse parseVerse(String line, int verseNumber, int chapterNumber) throws ParseException {
-		int firstWordEnd = line.indexOf(" ");
-		
-		String description = line.substring(0, firstWordEnd);
-		String verseContent = line.substring(firstWordEnd); // remove verse number (always first string - we already know it at this point
+		String verseContent = line.substring(line.indexOf(" ")); // remove verse number (always first string - we already know it at this point
 		
 		Verse verse = new Verse(verseNumber, chapterNumber);
 		verse.addWord(verseContent);
