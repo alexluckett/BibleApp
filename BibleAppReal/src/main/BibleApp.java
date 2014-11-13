@@ -25,7 +25,7 @@ public class BibleApp {
 		
 		long startTime = System.currentTimeMillis();
 		
-		for(int i = 0; i < bookNames[i].length(); i++){
+		for(int i = 0; i < /*bookNames[i].length()*/ 58; i++){
 			System.out.println("Current Book: " + bookNames[i].getName());
 			readInFile(bookNames[i].getName());
 		}
