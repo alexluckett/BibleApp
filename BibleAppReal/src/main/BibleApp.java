@@ -9,11 +9,12 @@ import java.util.Collection;
 /**
  * Completely unoptimised at this point. Did as a very basic concept of reading in the files.
  * 
- * @author Alex
+ * @author Alex Luckett
+ * @author Ashley Bridgwood
  *
  */
 public class BibleApp {
-	
+
 	public BibleApp() { }
 	
 	public static void main(String[] args) {
@@ -31,14 +32,12 @@ public class BibleApp {
 			String newLine = reader.readLine();
 			int lineNumber = 2;
 			
-			int chapterNumber = 1;
+			int chapterNumber = 0;
 			
 			while(newLine != null) {
 				if(newLine.startsWith("CHAPTER")) {			
 					chapterNumber++;
-				} else if(newLine.equals("")) {
-					
-				} else {
+				} else if(!newLine.equals("")) {
 					book.addVerse(parseVerse(newLine, lineNumber, chapterNumber));
 				}
 				
@@ -60,6 +59,8 @@ public class BibleApp {
 			for(Verse bookVerse : book.getVerses()) {
 				System.out.println("Chapter " + bookVerse.getChapterNumber() + ", verse " + bookVerse.getVerseNumber());
 			}
+			
+			System.out.println("Total time for 1 book: " + (endTime - startTime) + " milliseconds.");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
