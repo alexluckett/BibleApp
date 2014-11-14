@@ -20,18 +20,22 @@ import java.util.ArrayList;
  *
  */
 public class BibleApp {
-	public static final int TEST_RUNS = 100;
-	
-	private static File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
-	
-	
+	public static final int TEST_RUNS = 1;
+
+	private File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
+
+
 	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
-	
+	//private long wordCount = 0;
 	/**
 	 * Constructs a new BibleApp. No content currently.
 	 */
-	public BibleApp() { }
-	
+	public BibleApp() { 
+		for(int j = 0; j < bookNames.length; j++) {
+			readInFile(bookNames[j].getName());
+		}
+	}
+
 	/**
 	 * Runs a new instance of the bible app. Will (READ: not yet) take in search terms
 	 * or "book chapter:verse" content locator.
@@ -41,37 +45,27 @@ public class BibleApp {
 	 */
 	public static void main(String[] args) throws Exception { // TODO remove throws from method signature when speed issue resolved
 		long startTime = System.currentTimeMillis();
-		
+
 		for(int i = 0; i < TEST_RUNS; i++) {
 			BibleApp app = new BibleApp();
 			
-			for(int j = 0; j < bookNames.length; j++) {
-				//System.out.println("Current Book: " + bookNames[j].getName());
-				app.readInFile(bookNames[j].getName());
-			}
-			
-			for(Book book : app.parsedBooks) {
-				Collection<Verse> verses = book.getVerses();
-				
-				for(Verse verse : verses) {
-					Collection<String> words = verse.getWords();
-					
-					for(String word : words)
-						System.out.println(word);
-				}
-			}
-			
+			app.search(args[0]);
+
+			//System.out.println("Run " + i + ", verses: " + totalVerses);
+
+			//System.out.println("Bible " + i + ", word count: " + app.getWordCount());
+
 			//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
 			//app.readInFile("Psalms.txt"); // Psalms
 		}
-		
+
 		long endTime = System.currentTimeMillis();
-				
-		System.out.println("Average time (100 runs): " + (endTime - startTime)/TEST_RUNS + " milliseconds\n");
-		
-		throw new Exception("URGENT: This code simply cannot work properly. It takes ~26ms on my laptop (Alex)... which is ridiculously fast. What isn't being processed correctly?");
+
+		System.out.println("Average time (" + BibleApp.TEST_RUNS + " run(s)): " + (endTime - startTime)/TEST_RUNS + " milliseconds\n");
+
+		//throw new Exception("URGENT: This code simply cannot work properly. It takes ~26ms on my laptop (Alex)... which is ridiculously fast. What isn't being processed correctly?");
 	}
-	
+
 	/**
 	 * Processes a given file (book from the bible) using a filename passed through as
 	 * a parameter. Assumes the file is in the /data package.
@@ -82,17 +76,17 @@ public class BibleApp {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
 			//System.out.println("Processing: " + fileName);			
-			
+
 			Book book = new Book(reader.readLine()); // first line is always the book title
-						
+
 			int verseNumber = 1;
 			int chapterNumber = 0;
-			
+
 			String currentLine = reader.readLine();
-			
+
 			while(currentLine != null) {
 				boolean isLineEmpty = currentLine.length() == 0;
-				
+
 				if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {			
 					chapterNumber++;
 					verseNumber = 1; // new chapter, must reset verse count to 1
@@ -122,10 +116,10 @@ public class BibleApp {
 					book.addVerse(parseVerse(currentLine, verseNumber, chapterNumber));
 					verseNumber++;
 				}
-				
+
 				currentLine = reader.readLine();
 			}
-			
+
 			parsedBooks.add(book);
 			reader.close();
 		} catch (Exception e) {
@@ -133,27 +127,37 @@ public class BibleApp {
 			//e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Searches through books and finds occurrences of search terms.
 	 * 
 	 * @param statementToSearch search term
 	 */
 	public void search(String statementToSearch){
-		//Cycling through books
-		for(int i = 0; i < parsedBooks.size(); i++){
-			//Cycling through verses
-			for(int r = 0; i < parsedBooks.get(r).getVerses().size(); i++){
-				
-				Collection<Verse> verses = parsedBooks.get(r).getVerses();
-				
-				//if(parsedBooks.get(r).getVerses().)){
-					
-				//}
+		String bookName = "";
+		int verseNumber = -1;
+
+		for(Book book : parsedBooks) {
+			bookName = book.getTitle();
+
+			Collection<Verse> verses = book.getVerses();
+
+			for(Verse verse : verses) {
+				verseNumber = verse.getVerseNumber();
+
+				Collection<String> words = verse.getWords();
+
+				for(String word : words) {
+					if(word.contains(statementToSearch))
+						System.out.println(statementToSearch + " found. Book: " + bookName + ", verse: " + verseNumber);
+				}
 			}
+
+			if(verseNumber < 0)
+				System.out.println("Search term not found.");
 		}
 	}
-	
+
 	/**
 	 * Parses a verse, given the verse (line), verse number and chapter number.
 	 * 
@@ -165,10 +169,12 @@ public class BibleApp {
 	 */
 	private Verse parseVerse(String line, int verseNumber, int chapterNumber) {
 		String verseContent = line.substring(line.indexOf(" ")+1); // remove verse number (always first string - we already know it at this point
-		
+
+		//wordCount += verseContent.split(" ").length;
+
 		Verse verse = new Verse(verseNumber, chapterNumber);
 		verse.addWord(verseContent);
-		
+
 		/* debugging only - prints out contents of parsed verse.
 		 * 
 		System.out.println("Verse " + verseNumber + " parsed.");
@@ -178,8 +184,8 @@ public class BibleApp {
 		}
 		System.out.println();
 		System.out.println();
-		*/
-		
+		 */
+
 		return verse;
 	}
 
