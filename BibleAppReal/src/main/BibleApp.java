@@ -50,6 +50,17 @@ public class BibleApp {
 				app.readInFile(bookNames[j].getName());
 			}
 			
+			for(Book book : app.parsedBooks) {
+				Collection<Verse> verses = book.getVerses();
+				
+				for(Verse verse : verses) {
+					Collection<String> words = verse.getWords();
+					
+					for(String word : words)
+						System.out.println(word);
+				}
+			}
+			
 			//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
 			//app.readInFile("Psalms.txt"); // Psalms
 		}
@@ -80,7 +91,7 @@ public class BibleApp {
 			String currentLine = reader.readLine();
 			
 			while(currentLine != null) {
-				boolean isLineEmpty = currentLine.equals("");
+				boolean isLineEmpty = currentLine.length() == 0;
 				
 				if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {			
 					chapterNumber++;
