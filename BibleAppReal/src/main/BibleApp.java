@@ -202,8 +202,33 @@ public class BibleApp {
 	 * Searches through books to find the verse which is needed
 	 */
 	public static void lookupVerse(String bookName, int chapterNumber, int verseNumber){
+		System.out.println("Book Name: " + bookName);
+		System.out.println("Chapter Number: " + chapterNumber);
+		System.out.println("Verse Number: " + verseNumber);
+		Book b = null;
+		Verse v = null;
 		
-	}
+			for(Book book : parsedBooks){
+				System.out.println("LOOPING: " + book.getTitle());
+				if(book.getTitle().equalsIgnoreCase(bookName)){
+					b = book;
+					System.out.println("BOOK FOUND: " + book.getTitle());
+				} else {
+					System.out.println("NOT FOUND: " + book.getTitle());
+				}
+					//Collection<Verse> verses = b.getVerses();
+					
+					//for(Verse verse : verses){
+						//if(verse.getVerseNumber() == verseNumber){
+							//v = verse;
+							//System.out.println("Value: " + v.toString());
+							//}
+						//}
+					}
+				}
+			
+		//}
+		//parsedBooks.contains(o)
 	
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
