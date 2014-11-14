@@ -26,7 +26,7 @@ public class BibleApp {
 	private File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
 
 
-	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
+	private static List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
 	//private long wordCount = 0;
 	/**
 	 * Constructs a new BibleApp. No content currently.
@@ -154,11 +154,7 @@ public class BibleApp {
 				break;	
 				case 1:
 					System.out.println("Please enter a word you would like to search?: ");
-					//search();
-					finished = true;
-				break;
-				
-				case 2:
+					search(sc.next());
 					finished = true;
 				break;
 				
@@ -175,16 +171,17 @@ public class BibleApp {
 	 * 
 	 * @param statementToSearch search term
 	 */
-	public void search(String statementToSearch) {
+	public static void search(String statementToSearch) {
 		String bookName = "";
 		int chapterNumber = -1;
 		int verseNumber = -1;
-
+		long startTime = System.currentTimeMillis();
+		
 		for(Book book : parsedBooks) {
 			bookName = book.getTitle();
 
 			Collection<Verse> verses = book.getVerses();
-
+	
 			for(Verse verse : verses) {
 				verseNumber = verse.getVerseNumber();
 				chapterNumber = verse.getChapterNumber();
@@ -200,6 +197,8 @@ public class BibleApp {
 			if(verseNumber < 0 || chapterNumber < 0)
 				System.out.println("Search term not found.");
 		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Search complete! Time taken: " + (endTime - startTime) + " milliseconds.");
 	}
 
 	/**
