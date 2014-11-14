@@ -140,7 +140,7 @@ public class BibleApp {
 		do{
 			System.out.println("=====================");
 			System.out.println("1. Search for a word");
-			System.out.println("2. Next menu item");
+			System.out.println("2. Lookup Chapter");
 			System.out.println("3. Next menu item");
 			System.out.println("0. Exit");
 			System.out.println("=====================");
@@ -157,12 +157,26 @@ public class BibleApp {
 					finished = true;
 					search(sc.next());	
 				break;
+				case 2:
+					System.out.println("Please enter the Book name: ");
+					String name = sc.next();
+					System.out.println("Please enter the chapter number: ");
+					finished = true;
+					lookupChapter(name, sc.nextInt());
+				break;	
 				
 				default:
 					System.out.println("Invalid option");
 			}
 			
 		} while(!finished);
+		
+	}
+	
+	/**
+	 * Searches through books to find the chapters which refer to the book and chapter number 
+	 */
+	public static void lookupChapter(String bookName, int chapterNumber){
 		
 	}
 
