@@ -24,7 +24,8 @@ public class BibleApp {
 	public static final int TEST_RUNS = 1;
 
 	private File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
-
+	
+	static Scanner sc = new Scanner(System.in);
 
 	private static List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
 	//private long wordCount = 0;
@@ -135,13 +136,12 @@ public class BibleApp {
 	 */
 	public static void displayMenuSystem(){
 		boolean finished = false;
-		Scanner sc = new Scanner(System.in);
 		
 		do{
 			System.out.println("=====================");
 			System.out.println("1. Search for a word");
 			System.out.println("2. Lookup Chapter");
-			System.out.println("3. Next menu item");
+			System.out.println("3. Lookup verse");
 			System.out.println("0. Exit");
 			System.out.println("=====================");
 			int userChoice = sc.nextInt();
@@ -158,18 +158,50 @@ public class BibleApp {
 					search(sc.next());	
 				break;
 				case 2:
-					System.out.println("Please enter the Book name: ");
-					String name = sc.next();
-					System.out.println("Please enter the chapter number: ");
 					finished = true;
-					lookupChapter(name, sc.nextInt());
-				break;	
+					lookupChapter(getBookInformation(), getChapterInformation());
+				break;
+				case 3:
+					finished = true;
+					lookupVerse(getBookInformation(), getChapterInformation(), getVerseInformation());
+				break;
 				
 				default:
 					System.out.println("Invalid option");
 			}
 			
 		} while(!finished);
+		
+	}
+	
+	/**
+	 * Get the book name from the user
+	 */
+	public static String getBookInformation(){
+		System.out.println("Please enter the book name: ");
+		return sc.next();
+	}
+	
+	/**
+	 * Get chapter number from the user
+	 */
+	public static int getChapterInformation(){
+		System.out.println("Please enter the chapter number: ");
+		return sc.nextInt();
+	}
+	
+	/**
+	 * Get verse number from the user
+	 */
+	public static int getVerseInformation(){
+		System.out.println("Please enter the verse number: ");
+		return sc.nextInt();
+	}
+	
+	/**
+	 * Searches through books to find the verse which is needed
+	 */
+	public static void lookupVerse(String bookName, int chapterNumber, int verseNumber){
 		
 	}
 	
