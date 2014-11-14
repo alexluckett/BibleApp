@@ -133,8 +133,9 @@ public class BibleApp {
 	 * 
 	 * @param statementToSearch search term
 	 */
-	public void search(String statementToSearch){
+	public void search(String statementToSearch) {
 		String bookName = "";
+		int chapterNumber = -1;
 		int verseNumber = -1;
 
 		for(Book book : parsedBooks) {
@@ -144,16 +145,17 @@ public class BibleApp {
 
 			for(Verse verse : verses) {
 				verseNumber = verse.getVerseNumber();
+				chapterNumber = verse.getChapterNumber();
 
 				Collection<String> words = verse.getWords();
 
 				for(String word : words) {
 					if(word.contains(statementToSearch))
-						System.out.println(statementToSearch + " found. Book: " + bookName + ", verse: " + verseNumber);
+						System.out.println("\"" + statementToSearch + "\" found. Book: " + bookName + ", chapter: " + chapterNumber + ", verse: " + verseNumber);
 				}
 			}
 
-			if(verseNumber < 0)
+			if(verseNumber < 0 || chapterNumber < 0)
 				System.out.println("Search term not found.");
 		}
 	}
