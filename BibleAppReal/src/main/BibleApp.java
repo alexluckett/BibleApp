@@ -197,10 +197,12 @@ public class BibleApp {
 					}
 				}
 			}
-
-			if(verseNumber < 0 || chapterNumber < 0)
-				System.out.println("Search term not found.");
 		}
+		
+		if(count == 0){
+			System.out.println("Search term not found.");
+		}
+		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Search complete! Found \"" + statementToSearch +  "\" " + count + " times. Time taken: " + (endTime - startTime) + " milliseconds.");
 	}
