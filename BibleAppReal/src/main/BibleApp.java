@@ -155,8 +155,7 @@ public class BibleApp {
 				case 1:
 					System.out.println("Please enter a word you would like to search?: ");
 					finished = true;
-					search(sc.next());
-					
+					search(sc.next());	
 				break;
 				
 				default:
@@ -192,7 +191,8 @@ public class BibleApp {
 
 				for(String word : words) {
 					if(word.contains(statementToSearch)){
-						System.out.println("\"" + statementToSearch + "\" found. Book: " + bookName + ", chapter: " + chapterNumber + ", verse: " + verseNumber);
+						//System.out.println("\"" + statementToSearch + "\" found. Book: " + bookName + ", chapter: " + chapterNumber + ", verse: " + verseNumber);
+						System.out.println("\"" + statementToSearch + "\" found in: [" + bookName + " " + chapterNumber + ":" + verseNumber + "]");
 						count++;
 					}
 				}
