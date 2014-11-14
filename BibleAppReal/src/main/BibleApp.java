@@ -20,7 +20,10 @@ import java.util.ArrayList;
  *
  */
 public class BibleApp {
+	public static final int TEST_RUNS = 100;
+	
 	private static File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
+	
 	
 	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
 	
@@ -34,23 +37,28 @@ public class BibleApp {
 	 * or "book chapter:verse" content locator.
 	 *  
 	 * @param args program arguments
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
-		BibleApp app = new BibleApp();
-		
+	public static void main(String[] args) throws Exception { // TODO remove throws from method signature when speed issue resolved
 		long startTime = System.currentTimeMillis();
 		
-		for(int i = 0; i < bookNames.length; i++) {
-			System.out.println("Current Book: " + bookNames[i].getName());
-			app.readInFile(bookNames[i].getName());
+		for(int i = 0; i < TEST_RUNS; i++) {
+			BibleApp app = new BibleApp();
+			
+			for(int j = 0; j < bookNames.length; j++) {
+				//System.out.println("Current Book: " + bookNames[j].getName());
+				app.readInFile(bookNames[j].getName());
+			}
+			
+			//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
+			//app.readInFile("Psalms.txt"); // Psalms
 		}
-		
-		//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
-		//app.readInFile("Psalms.txt"); // Psalms has interesting descriptions. Here for testing purposes.
 		
 		long endTime = System.currentTimeMillis();
 				
-		System.out.println("Total Time: " + (endTime - startTime) + " milliseconds");
+		System.out.println("Average time (100 runs): " + (endTime - startTime)/TEST_RUNS + " milliseconds\n");
+		
+		throw new Exception("URGENT: This code simply cannot work properly. It takes ~26ms on my laptop (Alex)... which is ridiculously fast. What isn't being processed correctly?");
 	}
 	
 	/**
@@ -62,7 +70,7 @@ public class BibleApp {
 	public void readInFile(String fileName) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
-			System.out.println("Processing: " + fileName);			
+			//System.out.println("Processing: " + fileName);			
 			
 			Book book = new Book(reader.readLine()); // first line is always the book title
 						
@@ -96,7 +104,9 @@ public class BibleApp {
 					 * }
 					 *
 					 */
-					System.out.println("DESCRIPTION FOUND: " + currentLine);
+					//System.out.println("BOOK DESCRIPTION FOUND: " + currentLine); // this accidentally detects the first chapter description for psalm 119, as a result of it having verse 1
+				} else if(!isLineEmpty && Character.isLetter(currentLine.charAt(0))) {
+					//System.out.println("CHAPT. DESCRIPTION FOUND: " + currentLine); // chapter descriptions hit this condition (aside from the special case outlined above).
 				} else if(!isLineEmpty) {
 					book.addVerse(parseVerse(currentLine, verseNumber, chapterNumber));
 					verseNumber++;
@@ -114,7 +124,7 @@ public class BibleApp {
 	}
 	
 	/**
-	 * Searches through books and finds occurances of search terms.
+	 * Searches through books and finds occurrences of search terms.
 	 * 
 	 * @param statementToSearch search term
 	 */
@@ -143,7 +153,7 @@ public class BibleApp {
 	 * @return Verse object - completed verse
 	 */
 	private Verse parseVerse(String line, int verseNumber, int chapterNumber) {
-		String verseContent = line.substring(line.indexOf(" ")); // remove verse number (always first string - we already know it at this point
+		String verseContent = line.substring(line.indexOf(" ")+1); // remove verse number (always first string - we already know it at this point
 		
 		Verse verse = new Verse(verseNumber, chapterNumber);
 		verse.addWord(verseContent);

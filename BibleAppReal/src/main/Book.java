@@ -1,6 +1,7 @@
 package main;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 public class Book {
@@ -21,6 +22,16 @@ public class Book {
 	
 	public void addVerse(Verse chapter) {
 		verses.add(chapter);
+	}
+	
+	public LinkedHashSet<Integer> getChapters() {
+		LinkedHashSet<Integer> chapterNumbers = new LinkedHashSet<Integer>();
+		
+		for(Verse verse : verses) {
+			chapterNumbers.add((verse.getChapterNumber()));
+		}
+		
+		return chapterNumbers;
 	}
 	
 }
