@@ -27,21 +27,23 @@ public class BibleApp {
 	public BibleApp() {}
 	
 	public static void main(String[] args) {
+		BibleApp app = new BibleApp();
+		
 		long startTime = System.currentTimeMillis();
 		
 		for(int i = 0; i < bookNames.length; i++) {
 			System.out.println("Current Book: " + bookNames[i].getName());
-			readInFile(bookNames[i].getName());
+			app.readInFile(bookNames[i].getName());
 		}
 		
-		//readInFile("2Kings.txt"); // 2 kings has a description. Here for debugging purposes - uncomment this and comment above to use.
+		//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for debugging purposes - uncomment this and comment above to use.
 		
 		long endTime = System.currentTimeMillis();
 				
 		System.out.println("Total Time: " + (endTime - startTime) + " milliseconds");
 	}
 	
-	private static void readInFile(String fileName) {
+	public void readInFile(String fileName) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
 			System.out.println("Processing: " + fileName);			
@@ -51,23 +53,40 @@ public class BibleApp {
 			int verseNumber = 1;
 			int chapterNumber = 0;
 			
-			String nextLine = reader.readLine();
+			String currentLine = reader.readLine();
 			
-			while(nextLine != null) {
-				if(nextLine.startsWith("CHAPTER") || nextLine.startsWith("PSALM")) {			
-						chapterNumber++;
-						verseNumber = 1;
-//Currently not working *-----------------------------------
-				} else if(nextLine.startsWith("\\d")){
-					System.out.println(nextLine);
-					System.out.println("DESCRIPTION FOUND");
-//---------------------------------------------------------*		
-				} else if(!nextLine.equals("")) {
-					book.addVerse(parseVerse(nextLine, verseNumber, chapterNumber));
+			while(currentLine != null) {
+				boolean isLineEmpty = currentLine.equals("");
+				
+				if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {			
+					chapterNumber++;
+					verseNumber = 1; // new chapter, must reset verse count to 1
+				} else if(!isLineEmpty && verseNumber == 1 && Character.isLetter(currentLine.charAt(0))) { // description is always before first verse starts and starts with letter
+					/* 
+					 * Do we need descriptions? are they used in the program anywhere?
+					 * It's a waste of processing power to bother with them if we don't need
+					 * 
+					 * If not: this currently breaks for PSALM 119, which 
+					 * has a weird name (description?)each 8 lines or so. How are we going to deal with this?
+					 * 
+					 * TODO: plan this section
+					 * 
+					 * pseudo code:
+					 * 
+					 * if(currentLine is a new book) {
+					 * 	  book.setDescription(newLine);
+					 * } else {
+					 *    chapter.setDescription(newLine);
+					 * }
+					 *
+					 */
+					System.out.println("DESCRIPTION FOUND: " + currentLine);
+				} else if(!isLineEmpty) {
+					book.addVerse(parseVerse(currentLine, verseNumber, chapterNumber));
 					verseNumber++;
 				}
 				
-				nextLine = reader.readLine();
+				currentLine = reader.readLine();
 			}
 			
 			parsedBooks.add(book);
@@ -78,7 +97,7 @@ public class BibleApp {
 		}
 	}
 	
-	private void search(String statementToSearch){
+	public void search(String statementToSearch){
 		//Cycling through books
 		for(int i = 0; i < parsedBooks.size(); i++){
 			//Cycling through verses
@@ -93,7 +112,7 @@ public class BibleApp {
 		}
 	}
 	
-	private static Verse parseVerse(String line, int verseNumber, int chapterNumber) throws ParseException {
+	private Verse parseVerse(String line, int verseNumber, int chapterNumber) throws ParseException {
 		String verseContent = line.substring(line.indexOf(" ")); // remove verse number (always first string - we already know it at this point
 		
 		Verse verse = new Verse(verseNumber, chapterNumber);
