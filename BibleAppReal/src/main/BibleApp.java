@@ -22,10 +22,19 @@ import java.util.ArrayList;
 public class BibleApp {
 	private static File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
 	
-	private static List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
+	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
 	
-	public BibleApp() {}
+	/**
+	 * Constructs a new BibleApp. No content currently.
+	 */
+	public BibleApp() { }
 	
+	/**
+	 * Runs a new instance of the bible app. Will (READ: not yet) take in search terms
+	 * or "book chapter:verse" content locator.
+	 *  
+	 * @param args program arguments
+	 */
 	public static void main(String[] args) {
 		BibleApp app = new BibleApp();
 		
@@ -36,13 +45,20 @@ public class BibleApp {
 			app.readInFile(bookNames[i].getName());
 		}
 		
-		//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for debugging purposes - uncomment this and comment above to use.
+		//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
+		//app.readInFile("Psalms.txt"); // Psalms has interesting descriptions. Here for testing purposes.
 		
 		long endTime = System.currentTimeMillis();
 				
 		System.out.println("Total Time: " + (endTime - startTime) + " milliseconds");
 	}
 	
+	/**
+	 * Processes a given file (book from the bible) using a filename passed through as
+	 * a parameter. Assumes the file is in the /data package.
+	 * 
+	 * @param fileName filename of file to process (including .txt file extension)
+	 */
 	public void readInFile(String fileName) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
@@ -67,7 +83,7 @@ public class BibleApp {
 					 * It's a waste of processing power to bother with them if we don't need
 					 * 
 					 * If not: this currently breaks for PSALM 119, which 
-					 * has a weird name (description?)each 8 lines or so. How are we going to deal with this?
+					 * has a weird name (description?) each 8 lines or so. How are we going to deal with this?
 					 * 
 					 * TODO: plan this section
 					 * 
@@ -76,7 +92,7 @@ public class BibleApp {
 					 * if(currentLine is a new book) {
 					 * 	  book.setDescription(newLine);
 					 * } else {
-					 *    chapter.setDescription(newLine);
+					 *    chapter.setDescription(newLine); // we're gonna need to bring chapters back if this is needed
 					 * }
 					 *
 					 */
@@ -97,6 +113,11 @@ public class BibleApp {
 		}
 	}
 	
+	/**
+	 * Searches through books and finds occurances of search terms.
+	 * 
+	 * @param statementToSearch search term
+	 */
 	public void search(String statementToSearch){
 		//Cycling through books
 		for(int i = 0; i < parsedBooks.size(); i++){
@@ -112,7 +133,16 @@ public class BibleApp {
 		}
 	}
 	
-	private Verse parseVerse(String line, int verseNumber, int chapterNumber) throws ParseException {
+	/**
+	 * Parses a verse, given the verse (line), verse number and chapter number.
+	 * 
+	 * @param line verse to process
+	 * @param verseNumber number of this verse
+	 * @param chapterNumber chapter number of this verse
+	 * 
+	 * @return Verse object - completed verse
+	 */
+	private Verse parseVerse(String line, int verseNumber, int chapterNumber) {
 		String verseContent = line.substring(line.indexOf(" ")); // remove verse number (always first string - we already know it at this point
 		
 		Verse verse = new Verse(verseNumber, chapterNumber);
