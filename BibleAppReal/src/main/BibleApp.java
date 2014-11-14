@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 /**
@@ -49,7 +50,7 @@ public class BibleApp {
 		for(int i = 0; i < TEST_RUNS; i++) {
 			BibleApp app = new BibleApp();
 			
-			app.search(args[0]);
+			//app.search(args[0]);
 
 			//System.out.println("Run " + i + ", verses: " + totalVerses);
 
@@ -62,7 +63,8 @@ public class BibleApp {
 		long endTime = System.currentTimeMillis();
 
 		System.out.println("Average time (" + BibleApp.TEST_RUNS + " run(s)): " + (endTime - startTime)/TEST_RUNS + " milliseconds\n");
-
+		System.out.println("All books loaded!");
+		displayMenuSystem();
 		//throw new Exception("URGENT: This code simply cannot work properly. It takes ~26ms on my laptop (Alex)... which is ridiculously fast. What isn't being processed correctly?");
 	}
 
@@ -126,6 +128,46 @@ public class BibleApp {
 			System.err.println("Error reading bible files. Please ensure package is up to date.\n");
 			//e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Displays the menu screen and handles use choices
+	 */
+	public static void displayMenuSystem(){
+		boolean finished = false;
+		Scanner sc = new Scanner(System.in);
+		
+		do{
+			System.out.println("=====================");
+			System.out.println("1. Search for a word");
+			System.out.println("2. Next menu item");
+			System.out.println("3. Next menu item");
+			System.out.println("0. Exit");
+			System.out.println("=====================");
+			int userChoice = sc.nextInt();
+			
+		
+			switch(userChoice){
+				case 0:
+					System.out.println("Thank you for using BibleApp! (BibleApp Terminated)");
+					finished = true;
+				break;	
+				case 1:
+					System.out.println("Please enter a word you would like to search?: ");
+					//search();
+					finished = true;
+				break;
+				
+				case 2:
+					finished = true;
+				break;
+				
+				default:
+					System.out.println("Invalid option");
+			}
+			
+		} while(!finished);
+		
 	}
 
 	/**
