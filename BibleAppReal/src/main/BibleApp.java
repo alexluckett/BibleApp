@@ -154,8 +154,9 @@ public class BibleApp {
 				break;	
 				case 1:
 					System.out.println("Please enter a word you would like to search?: ");
-					search(sc.next());
 					finished = true;
+					search(sc.next());
+					
 				break;
 				
 				default:
@@ -176,6 +177,7 @@ public class BibleApp {
 		int chapterNumber = -1;
 		int verseNumber = -1;
 		long startTime = System.currentTimeMillis();
+		int count = 0;
 		
 		for(Book book : parsedBooks) {
 			bookName = book.getTitle();
@@ -189,8 +191,10 @@ public class BibleApp {
 				Collection<String> words = verse.getWords();
 
 				for(String word : words) {
-					if(word.contains(statementToSearch))
+					if(word.contains(statementToSearch)){
 						System.out.println("\"" + statementToSearch + "\" found. Book: " + bookName + ", chapter: " + chapterNumber + ", verse: " + verseNumber);
+						count++;
+					}
 				}
 			}
 
@@ -198,7 +202,7 @@ public class BibleApp {
 				System.out.println("Search term not found.");
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("Search complete! Time taken: " + (endTime - startTime) + " milliseconds.");
+		System.out.println("Search complete! Found \"" + statementToSearch +  "\" " + count + " times. Time taken: " + (endTime - startTime) + " milliseconds.");
 	}
 
 	/**
