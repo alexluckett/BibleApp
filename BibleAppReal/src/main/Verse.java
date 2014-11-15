@@ -30,4 +30,16 @@ public class Verse {
 		return words;
 	}
 	
+	public String getWord(int verseNumber){
+		Collection<String> words = getWords();
+		
+		for(int i = 0; i < words.size(); i++){
+			if(i == verseNumber){
+				
+			}
+		}
+		
+		return null;
+	}
+	
 }

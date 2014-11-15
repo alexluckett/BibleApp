@@ -6,10 +6,16 @@ import java.util.LinkedList;
 
 public class Book {
 	private final String title;
+	private final String fileName;
 	private Collection<Verse> verses = new LinkedList<Verse>();
 	
-	public Book(String title) {
+	public Book(String fileName, String title) {
 		this.title = title;
+		this.fileName = fileName;
+	}
+	
+	public String getFilename(){
+		return fileName;
 	}
 	
 	public String getTitle() {

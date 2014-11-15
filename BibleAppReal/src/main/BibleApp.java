@@ -81,7 +81,7 @@ public class BibleApp {
 			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
 			//System.out.println("Processing: " + fileName);			
 
-			Book book = new Book(reader.readLine()); // first line is always the book title
+			Book book = new Book(fileName, reader.readLine()); // first line is always the book title
 
 			int verseNumber = 1;
 			int chapterNumber = 0;
@@ -179,7 +179,7 @@ public class BibleApp {
 	 * Get the book name from the user
 	 */
 	public static String getBookInformation(){
-		System.out.println("Please enter the book name: ");
+		System.out.println("Please enter the book name (With file extension): ");
 		return sc.next();
 	}
 	
@@ -210,23 +210,23 @@ public class BibleApp {
 		Verse v = null;
 		
 			for(Book book : parsedBooks){
-				System.out.println("LOOPING: " + book.getTitle());
-				if(book.getTitle().equalsIgnoreCase(bookName)){
+				if(book.getFilename().equalsIgnoreCase(bookName)){
 					b = book;
 					System.out.println("BOOK FOUND: " + book.getTitle());
-				} else {
-					System.out.println("NOT FOUND: " + book.getTitle());
-				}
-					//Collection<Verse> verses = b.getVerses();
+					Collection<Verse> verses = b.getVerses();
 					
-					//for(Verse verse : verses){
-						//if(verse.getVerseNumber() == verseNumber){
-							//v = verse;
-							//System.out.println("Value: " + v.toString());
-							//}
-						//}
-					}
+					for(Verse verse : verses){
+						if(verse.getChapterNumber() == chapterNumber){
+							v = verse;
+							if(v.getVerseNumber() == verseNumber){
+								System.out.println("HIT");
+							}
+							}
+						
+						}
 				}
+			}
+		}
 			
 		//}
 		//parsedBooks.contains(o)
@@ -235,31 +235,6 @@ public class BibleApp {
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
 	public static void lookupChapter(String bookName, int chapterNumber){
-		System.out.println("Book Name:"+ bookName);
-		System.out.println("Chapter Number:" + chapterNumber);
-		
-		Book B = null;
-		Verse V = null;
-	//	Chapter C = null;
-		
-		for(Book book : parsedBooks){
-			System.out.println("Reading: " + book.getTitle());
-			if(book.getTitle().equalsIgnoreCase(bookName)){
-				B = book;
-				System.out.println("Book Found: " + book.getTitle());
-			}
-			else
-			{
-				System.out.println("Book Not Found: " + book.getTitle());
-				
-		}
-			Collection<Verse> verses = B.getVerses();		
-			 for(Verse verse : verses ){
-			//	 if(verse.getVerseNumber()==verseNumber){
-					 
-				 }
-			 }
-		
 		
 		}
 		
