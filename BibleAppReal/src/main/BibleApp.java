@@ -18,6 +18,7 @@ import java.util.Scanner;
  * 
  * @author Alex Luckett
  * @author Ashley Bridgwood
+ * @author Charandeep Rai :)
  *
  */
 public class BibleApp {
@@ -234,8 +235,34 @@ public class BibleApp {
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
 	public static void lookupChapter(String bookName, int chapterNumber){
+		System.out.println("Book Name:"+ bookName);
+		System.out.println("Chapter Number:" + chapterNumber);
 		
-	}
+		Book B = null;
+		Verse V = null;
+	//	Chapter C = null;
+		
+		for(Book book : parsedBooks){
+			System.out.println("Reading: " + book.getTitle());
+			if(book.getTitle().equalsIgnoreCase(bookName)){
+				B = book;
+				System.out.println("Book Found: " + book.getTitle());
+			}
+			else
+			{
+				System.out.println("Book Not Found: " + book.getTitle());
+				
+		}
+			Collection<Verse> verses = B.getVerses();		
+			 for(Verse verse : verses ){
+			//	 if(verse.getVerseNumber()==verseNumber){
+					 
+				 }
+			 }
+		
+		
+		}
+		
 
 	/**
 	 * Searches through books and finds occurrences of search terms.
