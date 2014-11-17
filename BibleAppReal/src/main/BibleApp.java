@@ -220,8 +220,13 @@ public class BibleApp {
 							v = verse;
 							if(v.getVerseNumber() == verseNumber){
 								System.out.println("HIT");
+								
+								for(String word : verse.getWords())
+									System.out.println(word);
+								}
 							}
-							}
+							
+							
 						
 						}
 				}
@@ -252,7 +257,10 @@ public class BibleApp {
 		int count = 0;
 		
 		for(Book book : parsedBooks) {
-			bookName = book.getTitle();
+			//which one to use?
+			bookName = book.getFilename(); 
+			//bookName = book.getTitle();
+			
 
 			Collection<Verse> verses = book.getVerses();
 	
@@ -265,8 +273,9 @@ public class BibleApp {
 				for(String word : words) {
 					if(word.contains(statementToSearch)){
 						//System.out.println("\"" + statementToSearch + "\" found. Book: " + bookName + ", chapter: " + chapterNumber + ", verse: " + verseNumber);
-						System.out.println("\"" + statementToSearch + "\" found in: [" + bookName + " " + chapterNumber + ":" + verseNumber + "]");
 						count++;
+						System.out.println(count + ": \"" + statementToSearch + "\" found in: [" + bookName + " " + chapterNumber + ":" + verseNumber + "]");
+						
 					}
 				}
 			}
