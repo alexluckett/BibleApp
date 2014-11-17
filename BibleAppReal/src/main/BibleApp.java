@@ -154,9 +154,8 @@ public class BibleApp {
 					finished = true;
 				break;	
 				case 1:
-					System.out.println("Please enter a word you would like to search?: ");
 					finished = true;
-					search(sc.next());	
+					search(getWordInformation());	
 				break;
 				case 2:
 					finished = true;
@@ -168,7 +167,7 @@ public class BibleApp {
 				break;
 				case 4:
 					finished = true;
-					verseByWord();
+					verseByWord(getWordInformation());
 				break;	
 				
 				default:
@@ -178,6 +177,14 @@ public class BibleApp {
 		} while(!finished);
 		
 	}
+	
+	/**
+	 * Get words from the user
+	 */
+	public static String getWordInformation(){
+		System.out.println("What is the word or statement you are looking for: ");
+		return sc.next();
+	}	
 	
 	/**
 	 * Get the book name from the user
@@ -206,8 +213,29 @@ public class BibleApp {
 	/**
 	 * Searches through the books, and returns the verse which the word is found in
 	 */
-	public static void verseByWord(){
+	public static void verseByWord(String statementToSearch){
+		System.out.println("Statement To Search: " + statementToSearch);
+		Book b = null;
+		int verseNumber = 0;
+		int chapterNumber = 0;
 		
+		for(Book book : parsedBooks){
+			Collection<Verse> verses = book.getVerses();
+			for(Verse verse : verses){
+				verseNumber = verse.getVerseNumber();
+				chapterNumber = verse.getChapterNumber();
+
+				Collection<String> words = verse.getWords();
+
+				for(String word : words) {
+					if(word.contains(statementToSearch)){
+						System.out.println("");
+						
+					}
+				}
+			}
+		}
+				
 	}
 	
 	/**
@@ -230,8 +258,6 @@ public class BibleApp {
 						if(verse.getChapterNumber() == chapterNumber){
 							v = verse;
 							if(v.getVerseNumber() == verseNumber){
-								System.out.println("HIT");
-								
 								for(String word : verse.getWords())
 									System.out.println("Verse: " + word);
 								}
