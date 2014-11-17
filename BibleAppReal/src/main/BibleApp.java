@@ -250,7 +250,31 @@ public class BibleApp {
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
 	public static void lookupChapter(String bookName, int chapterNumber){
+		System.out.println("Book Name:" + bookName);
+		System.out.println("Chapter Number" + chapterNumber);
 		
+		Book B = null;
+		Verse V = null;
+		
+		long startTime = System.nanoTime();
+		for (Book book : parsedBooks){
+			if(book.getFilename().equalsIgnoreCase(bookName)){
+				B = book;
+				System.out.println("Book Found: " + book.getTitle());
+				Collection<Verse> verses = B.getVerses();
+			}else {
+				System.out.println("Book Not Found.");
+			}
+			for(Verse verse : verses){
+				if(verse.getChapterNumber() == chapterNumber){
+					System.out.println("Chapter Number:" + chapterNumber);
+					System.out.println("Verse Number:" + verse);
+				}	
+					
+			}
+		}
+		long endTime = System.nanoTime();
+		System.out.println("Search Complete! Time taken: " + (endTime - startTime) + " milliseconds");
 		}
 		
 
