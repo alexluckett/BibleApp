@@ -288,15 +288,14 @@ public class BibleApp {
 				B = book;
 				System.out.println("Book Found: " + book.getTitle());
 				Collection<Verse> verses = B.getVerses();
-			}else {
-				System.out.println("Book Not Found.");
-			}
+			
 			for(Verse verse : verses){
 				if(verse.getChapterNumber() == chapterNumber){
 					System.out.println("Chapter Number:" + chapterNumber);
 					System.out.println("Verse Number:" + verse);
 				}	
 					
+			}
 			}
 		}
 		long endTime = System.nanoTime();
