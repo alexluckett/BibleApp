@@ -63,9 +63,8 @@ public class BibleApp {
 		}
 
 		long endTime = System.currentTimeMillis();
-
-		System.out.println("Average time (" + BibleApp.TEST_RUNS + " run(s)): " + (endTime - startTime)/TEST_RUNS + " milliseconds\n");
-		System.out.println("All books loaded!");
+		System.out.println("All books sorted and loaded!");
+		System.out.println("Time taken: " + (endTime - startTime) + " milliseconds.");
 		displayMenuSystem();
 		//throw new Exception("URGENT: This code simply cannot work properly. It takes ~26ms on my laptop (Alex)... which is ridiculously fast. What isn't being processed correctly?");
 	}
@@ -139,12 +138,13 @@ public class BibleApp {
 		boolean finished = false;
 		
 		do{
-			System.out.println("=====================");
-			System.out.println("1. Search for a word");
-			System.out.println("2. Lookup Chapter");
-			System.out.println("3. Lookup verse");
-			System.out.println("0. Exit");
-			System.out.println("=====================");
+			System.out.println("================================");
+			System.out.println("| 1. Search for a word         |");
+			System.out.println("| 2. Lookup Chapter            |");
+			System.out.println("| 3. Lookup verse              |");
+			System.out.println("| 4. Find verse by word        |");
+			System.out.println("| 0. Exit                      |");
+			System.out.println("================================");
 			int userChoice = sc.nextInt();
 			
 		
@@ -166,6 +166,10 @@ public class BibleApp {
 					finished = true;
 					lookupVerse(getBookInformation(), getChapterInformation(), getVerseInformation());
 				break;
+				case 4:
+					finished = true;
+					verseByWord();
+				break;	
 				
 				default:
 					System.out.println("Invalid option");
@@ -200,6 +204,13 @@ public class BibleApp {
 	}
 	
 	/**
+	 * Searches through the books, and returns the verse which the word is found in
+	 */
+	public static void verseByWord(){
+		
+	}
+	
+	/**
 	 * Searches through books to find the verse which is needed
 	 */
 	public static void lookupVerse(String bookName, int chapterNumber, int verseNumber){
@@ -208,7 +219,7 @@ public class BibleApp {
 		System.out.println("Verse Number: " + verseNumber);
 		Book b = null;
 		Verse v = null;
-		
+			long startTime = System.currentTimeMillis();
 			for(Book book : parsedBooks){
 				if(book.getFilename().equalsIgnoreCase(bookName)){
 					b = book;
@@ -222,15 +233,14 @@ public class BibleApp {
 								System.out.println("HIT");
 								
 								for(String word : verse.getWords())
-									System.out.println(word);
+									System.out.println("Verse: " + word);
 								}
-							}
-							
-							
-						
+							}									
 						}
 				}
 			}
+			long endTime = System.currentTimeMillis();
+			System.out.println("Search Complete! Time taken: " + (endTime - startTime) + " milliseconds");
 		}
 			
 		//}
