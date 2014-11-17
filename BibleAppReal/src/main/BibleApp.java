@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -145,8 +146,13 @@ public class BibleApp {
 			System.out.println("| 4. Find verse by word        |");
 			System.out.println("| 0. Exit                      |");
 			System.out.println("================================");
-			int userChoice = sc.nextInt();
+			int userChoice = 0; 
 			
+			try{
+				userChoice = sc.nextInt();
+			} catch (InputMismatchException e){
+				System.out.println("Enter a valid number please.");
+			}
 		
 			switch(userChoice){
 				case 0:
