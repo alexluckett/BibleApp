@@ -286,7 +286,7 @@ public class BibleApp {
 		System.out.println("Chapter Number" + chapterNumber);
 		
 		Book B = null;
-		Verse V = null;
+		
 		
 		long startTime = System.nanoTime();
 		for (Book book : parsedBooks){
