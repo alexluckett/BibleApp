@@ -13,6 +13,49 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
+/*************************************************************************************************************************
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * OLD VERSION OF PROJECT! Check "BibleAppSearchOptimised" for new version.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ **************************************************************************************************************************/
+
+
+
 /**
  * Main class for bible app. Will include ability to load in bible,
  * search for text and go to certain chapters/verses via command line interface.
@@ -48,25 +91,27 @@ public class BibleApp {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception { // TODO remove throws from method signature when speed issue resolved
-		long startTime = System.currentTimeMillis();
-
-		for(int i = 0; i < TEST_RUNS; i++) {
-			BibleApp app = new BibleApp();
-			
-			//app.search(args[0]);
-
-			//System.out.println("Run " + i + ", verses: " + totalVerses);
-
-			//System.out.println("Bible " + i + ", word count: " + app.getWordCount());
-
-			//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
-			//app.readInFile("Psalms.txt"); // Psalms
-		}
-
-		long endTime = System.currentTimeMillis();
-		System.out.println("All books sorted and loaded!");
-		System.out.println("Time taken: " + (endTime - startTime) + " milliseconds.");
-		displayMenuSystem();
+		throw new Exception("OLD VERSION OF PROJECT! Check \"BibleAppSearchOptimised\" for new version.");
+		
+//		long startTime = System.currentTimeMillis();
+//
+//		for(int i = 0; i < TEST_RUNS; i++) {
+//			BibleApp app = new BibleApp();
+//			
+//			//app.search(args[0]);
+//
+//			//System.out.println("Run " + i + ", verses: " + totalVerses);
+//
+//			//System.out.println("Bible " + i + ", word count: " + app.getWordCount());
+//
+//			//app.readInFile("2Kings.txt"); // 2 kings has a description. Here for testing purposes if needed..
+//			//app.readInFile("Psalms.txt"); // Psalms
+//		}
+//
+//		long endTime = System.currentTimeMillis();
+//		System.out.println("All books sorted and loaded!");
+//		System.out.println("Time taken: " + (endTime - startTime) + " milliseconds.");
+//		displayMenuSystem();
 		//throw new Exception("URGENT: This code simply cannot work properly. It takes ~26ms on my laptop (Alex)... which is ridiculously fast. What isn't being processed correctly?");
 	}
 
