@@ -93,7 +93,7 @@ public class BibleApp {
 			reader.close();
 		} catch (Exception e) {
 			System.err.println("Error reading bible files. Please ensure package is up to date.\n");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
@@ -132,11 +132,11 @@ public class BibleApp {
 					
 					break;
 				case 2:
-					lookupChapter(getBookInformation(sc), getChapterInformation(sc));
+					lookupChapter(getBookIdFromUser(sc), getChapterInformation(sc));
 					
 					break;
 				case 3:
-					lookupVerse(getBookInformation(sc), getChapterInformation(sc), getVerseInformation(sc));
+					lookupVerse(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc));
 					
 					break;
 				case 4:
@@ -187,15 +187,14 @@ public class BibleApp {
 	/**
 	 * Display the book selection to the user 
 	 */
-	public int getBookIdFromUser(){
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the book number");
+	public int getBookIdFromUser(Scanner sc) {
+		System.out.println("Please enter the book number:");
 		for(int i = 0; i < parsedBooks.size(); i++){
-			System.out.println(i + ": " + parsedBooks.get(i).getTitle());
+			System.out.println((i+1) + ": " + parsedBooks.get(i).getTitle());
 		}
 		
 		System.out.println("Please choice your selection: ");
-		return sc.nextInt();
+		return sc.nextInt() - 1; // take into account 0 based numbering
 	}
 	
 	/**
@@ -210,16 +209,9 @@ public class BibleApp {
 	/**
 	 * Searches through books to find the verse which is needed
 	 */
-	public void lookupVerse(String bookName, int chapterNumber, int verseNumber) {
-		int bookId = 0;
+	public void lookupVerse(int bookId, int chapterNumber, int verseNumber) {
 		long startTime = System.currentTimeMillis();
 		
-		for(int i = 0; i < parsedBooks.size(); i++){
-			if(parsedBooks.get(i).getFileName().equalsIgnoreCase(bookName)){
-				bookId = i;
-				break;
-			}
-		}
 		Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber);
 		long endTime = System.currentTimeMillis();
 		
@@ -231,16 +223,8 @@ public class BibleApp {
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
-	public void lookupChapter(String bookName, int chapterNumber) {
-		int bookId = 0;
-		
+	public void lookupChapter(int bookId, int chapterNumber) {		
 		long startTime = System.currentTimeMillis();
-		for(int i = 0; i < parsedBooks.size(); i++){
-			if(parsedBooks.get(i).getFileName().equalsIgnoreCase(bookName)){
-				bookId = i;
-				break;
-			}
-		}
 		
 		Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
 		List<Verse> v = answer.getVerses();
@@ -289,8 +273,6 @@ public class BibleApp {
 	 */
 	private Verse parseVerse(String line, String bookName, int verseNumber, int chapterNumber) {
 		String[] words = StringUtils.splitWords(line);
-		
-		//String[] words = line.split(' ');
 		words[0] = null; // first word is number, so ignore it
 		
 		for(String word : words) {
