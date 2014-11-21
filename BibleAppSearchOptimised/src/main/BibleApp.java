@@ -75,8 +75,7 @@ public class BibleApp {
 					if(chapterNumber != 0)
 						book.addChapter(chapter);
 					
-					chapter = new Chapter(chapterNumber);
-					chapterNumber++;
+					chapter = new Chapter(chapterNumber++);
 					verseNumber = 1; // new chapter, must reset verse count to 1
 				} else if(!isLineEmpty && Character.isLetter(currentLine.trim().charAt(0))) {
 					// description stuff
