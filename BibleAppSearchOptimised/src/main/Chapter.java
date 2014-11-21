@@ -25,7 +25,7 @@ public class Chapter {
 	}
 	
 	public Verse getVerse(int verseNumber) {
-		if(verseNumber == 0)
+		if(verseNumber == 0 || verseNumber > verses.size())
 			throw new InvalidParameterException("Verse number cannot be less than 1.");
 		
 		return verses.get(verseNumber - 1); // 0 based numbering!
