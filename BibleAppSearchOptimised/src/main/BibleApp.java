@@ -14,7 +14,7 @@ import java.util.Set;
  * search for text and go to certain chapters/verses via command line interface.
  * 
  * @author Alex Luckett <lucketta@aston.ac.uk>
- * @author Ashley Bridgwood
+ * @author Ashley Bridgwood <bridgwa1@aston.ac.uk>
  * @author Charandeep Rai
  *
  */
@@ -64,7 +64,7 @@ public class BibleApp {
 			int verseNumber = 1;
 			int chapterNumber = 0;
 
-			Book book = new Book(bookTitle);
+			Book book = new Book(fileName, bookTitle);
 			Chapter chapter = null;
 			
 			String currentLine = reader.readLine();
@@ -185,6 +185,20 @@ public class BibleApp {
 	}
 	
 	/**
+	 * Display the book selection to the user 
+	 */
+	public int getBookIdFromUser(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please enter the book number");
+		for(int i = 0; i < parsedBooks.size(); i++){
+			System.out.println(i + ": " + parsedBooks.get(i).getTitle());
+		}
+		
+		System.out.println("Please choice your selection: ");
+		return sc.nextInt();
+	}
+	
+	/**
 	 * Searches through the books, and returns the verse which the word is found in
 	 */
 	public void verseByWord(String statementToSearch){
@@ -197,6 +211,20 @@ public class BibleApp {
 	 * Searches through books to find the verse which is needed
 	 */
 	public void lookupVerse(String bookName, int chapterNumber, int verseNumber) {
+		int bookId = 0;
+		long startTime = System.currentTimeMillis();
+		
+		for(int i = 0; i < parsedBooks.size(); i++){
+			if(parsedBooks.get(i).getFileName().equalsIgnoreCase(bookName)){
+				bookId = i;
+				break;
+			}
+		}
+		Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber);
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println("Verse: " + answer.getText());
+		System.out.println("Time taken: " + (endTime - startTime) + " ms");
 		
 	}
 	
@@ -204,6 +232,23 @@ public class BibleApp {
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
 	public void lookupChapter(String bookName, int chapterNumber) {
+		int bookId = 0;
+		
+		long startTime = System.currentTimeMillis();
+		for(int i = 0; i < parsedBooks.size(); i++){
+			if(parsedBooks.get(i).getFileName().equalsIgnoreCase(bookName)){
+				bookId = i;
+				break;
+			}
+		}
+		
+		Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
+		List<Verse> v = answer.getVerses();
+		for(Verse verse : v){
+			System.out.println(verse.getText());
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time Taken: " + (endTime - startTime) + " ms");
 		
 	}
 		

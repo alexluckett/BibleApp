@@ -6,15 +6,22 @@ import java.util.List;
 
 public class Book {
 	private final String title;
+	private final String fileName;
 	private List<Chapter> chapters = new ArrayList<Chapter>(10); // need to keep order
 	
-	public Book(String title) {
+	public Book(String fileName, String title) {
 		this.title = title;
+		this.fileName = fileName;
 	}
 	
 	public String getTitle() {
 		return title;
 	}
+	
+	public String getFileName(){
+		return fileName;
+	}
+	
 	
 	public void addChapter(Chapter chapter) {
 		if(chapter == null)
