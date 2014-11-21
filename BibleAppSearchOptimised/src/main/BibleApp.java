@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
 
-
 /**
  * Main class for bible app. Will include ability to load in bible,
  * search for text and go to certain chapters/verses via command line interface.

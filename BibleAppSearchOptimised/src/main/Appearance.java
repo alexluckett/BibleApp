@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * Represents an appearance of a search term.
+ * 
+ * @author Alex Luckett <lucketta@aston.ac.uk>
+ */
 public class Appearance {
 	private String book;
 	private int chapter;
@@ -28,11 +33,14 @@ public class Appearance {
 		return (book.hashCode() + chapter + verse);
 	}
 	
+	/**
+	 * Checks if two appearances are equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		Appearance comparison;
 		
-		if(!(obj instanceof Appearance)) {
+		if(!(obj instanceof Appearance)) { // can't be equal if they're not the same type!
 			return false;
 		} else {
 			comparison = (Appearance) obj;

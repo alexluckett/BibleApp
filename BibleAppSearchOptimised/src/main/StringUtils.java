@@ -4,9 +4,20 @@ package main;
  * Utility functions for Strings.
  * 
  * @author Alex Luckett <lucketta@aston.ac.uk>
- *
  */
 public class StringUtils {
+	
+	/**
+	 * Splits words up by spaces, 150 words max.
+	 * 
+	 * Used as an alternative to string.split(" ") as a little faster (~50-100ms in some cases).
+	 * 
+	 * @param text
+	 * @return String[] of words
+	 */
+	public static String[] splitWords(String line) {
+		return splitWords(line, 150);
+	}
 	
 	/**
 	 * Splits words up by spaces. Used as an alternative to string.split(" ") as a little faster (~50-100ms in some cases).
@@ -14,15 +25,15 @@ public class StringUtils {
 	 * @param text
 	 * @return String[] of words
 	 */
-	public static String[] splitWords(String line) {
-		String[] words = new String[150]; // rough maximum words per verse 
+	public static String[] splitWords(String line, int maxWords) {
+		String[] words = new String[maxWords]; // rough maximum words per verse 
 		
 		int count = 0;
 		int i = 0;
 		int previous = 0;
 		
-		while((i = line.indexOf(' ', previous)) != -1) {			
-			String word = line.substring(previous, i);
+		while((i = line.indexOf(' ', previous)) != -1) { // check the position of the next space for our new word. -1 is no more available.		
+			String word = line.substring(previous, i); // get word between last word and new
 			
 			words[count++] = removePunctuation(word);
 			

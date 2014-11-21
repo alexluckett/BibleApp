@@ -1,5 +1,6 @@
 package main;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +17,16 @@ public class Book {
 	}
 	
 	public void addChapter(Chapter chapter) {
+		if(chapter == null)
+			throw new InvalidParameterException("Chapter number cannot be null.");
+		
 		chapters.add(chapter);
 	}
 	
 	public Chapter getChapter(int chapterNumber) {
+		if(chapterNumber == 0)
+			throw new InvalidParameterException("Chapter number cannot be less than 1.");
+		
 		return chapters.get(chapterNumber - 1);
 	}
 	
