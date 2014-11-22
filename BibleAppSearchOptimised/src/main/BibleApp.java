@@ -66,8 +66,9 @@ public class BibleApp {
 			Book book = new Book(fileName, bookTitle);
 			Chapter chapter = null;
 			
-			String currentLine = reader.readLine();
-			while(currentLine != null) {
+			String currentLine;
+			
+			while((currentLine = reader.readLine()) != null) {
 				boolean isLineEmpty = currentLine.length() == 0;
 
 				if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {
@@ -84,7 +85,7 @@ public class BibleApp {
 					);
 				}
 
-				currentLine = reader.readLine();
+				
 			}
 
 			parsedBooks.add(book);
@@ -104,19 +105,25 @@ public class BibleApp {
 		boolean finished = false;
 		
 		do {
-			System.out.println("================================");
-			System.out.println("| 1. Search for a word         |");
-			System.out.println("| 2. Lookup Chapter            |");
-			System.out.println("| 3. Lookup verse              |");
-			System.out.println("| 4. Find verse by word        |");
-			System.out.println("| 0. Exit                      |");
-			System.out.println("================================");
+			StringBuilder menu = new StringBuilder();
+			{
+				menu.append("================================\n");
+				menu.append("| 1. Search for a word         |\n");
+				menu.append("| 2. Lookup Chapter            |\n");
+				menu.append("| 3. Lookup verse              |\n");
+				menu.append("| 4. Find verse by word        |\n");
+				menu.append("| 0. Exit                      |\n");
+				menu.append("================================\n");
+				menu.append("Please enter the activity number you wish to use: ");
+			}
+			System.out.print(menu);
+			
 			int userChoice = 0; 
 			
 			try {
 				userChoice = sc.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.println("Enter a valid number please.");
+			} catch (Exception e) {
+				System.err.println("Invalid option.");
 			}
 		
 			switch(userChoice) {
@@ -143,7 +150,7 @@ public class BibleApp {
 					break;	
 				
 				default:
-					System.out.println("Invalid option");
+					System.out.println("\nInvalid option!");
 			}
 			
 		} while(!finished);
@@ -211,7 +218,6 @@ public class BibleApp {
 		
 		System.out.println("Verse: " + answer.getText());
 		System.out.println("Time taken: " + (endTime - startTime) + " ms");
-		
 	}
 	
 	/**
@@ -254,6 +260,8 @@ public class BibleApp {
 			for(Appearance appearance : appearances) {
 				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
 			}
+			
+			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
 		} else {
 			sb.append("No search results found.\n");
 		}
