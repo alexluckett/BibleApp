@@ -249,19 +249,19 @@ public class BibleApp {
 		List<Appearance> appearances = wordHistory.getAppearances(statementToSearch);
 		
 		if(appearances != null && appearances.size() != 0) {
-			System.out.println("\"" + statementToSearch + "\" found! Occurances: " + appearances.size());
+			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
 			
 			for(Appearance appearance : appearances) {
 				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
 			}
 		} else {
-			System.out.println("No search results found.\n");
+			sb.append("No search results found.\n");
 		}
 		
 		long end = System.currentTimeMillis();
 		
-		System.out.println(sb);
-		System.out.println("TIME TAKEN TO SEARCH: " + (end - start) + "ms");
+		System.out.println("\n" + sb);
+		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + (end - start) + "ms");
 	}
 
 	/**

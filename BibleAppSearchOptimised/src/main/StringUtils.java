@@ -46,17 +46,21 @@ public class StringUtils {
 	}
 	
 	/**
-	 * Strip punctuation from the end of a word. 
+	 * Strip punctuation from the start and end of a word. 
 	 * Ensures that only words are logged, not punctuation also.
 	 * 
 	 * @param word
 	 * @return word without end punctuation
 	 */
 	public static String removePunctuation(String word) {
+		int wordStart = 0;
 		int wordLength = word.length() - 1;
 		
+		if(word.length() > 2 && !Character.isLetter(word.charAt(wordStart)))
+			wordStart++; // remove any symbols at start of words
+		
 		if(word.length() > 1 && !Character.isLetter(word.charAt(wordLength))) { // check the string has more than one letter, and if the last char is not a letter
-			return word.substring(0, wordLength);
+			return word.substring(wordStart, wordLength);
 		}
 		
 		return word;
