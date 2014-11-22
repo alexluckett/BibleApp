@@ -154,15 +154,7 @@ public class BibleApp {
 	 * Get words from the user
 	 */
 	public String getWordInformation(Scanner sc) {
-		System.out.println("What is the word or statement you are looking for: ");
-		return sc.next();
-	}	
-	
-	/**
-	 * Get the book name from the user
-	 */
-	public String getBookInformation(Scanner sc) {
-		System.out.println("Please enter the book name (With file extension): ");
+		System.out.println("Please enter the word you are looking for: ");
 		return sc.next();
 	}
 	
@@ -188,14 +180,14 @@ public class BibleApp {
 	public int getBookIdFromUser(Scanner sc) {
 		StringBuilder sb = new StringBuilder();
 		
-		System.out.println("Please enter the book number:");
 		for(int i = 0; i < parsedBooks.size(); i++){
 			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n");
 		}
 		
+		System.out.println("Please enter the book number:");
 		System.out.println(sb);
-		
 		System.out.println("Please choose a book number: ");
+		
 		return sc.nextInt() - 1; // take into account 0 based numbering
 	}
 	
