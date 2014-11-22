@@ -9,6 +9,7 @@ public class Appearance {
 	private String book;
 	private int chapter;
 	private int verse;
+	private int count = 0; // number of appearances within the same book, chapter and verse
 	
 	public Appearance(String book, int chapter, int verse) {
 		this.book = book;
@@ -28,9 +29,23 @@ public class Appearance {
 		return verse;
 	}
 	
+	public void incrementCount() {
+		count++;
+	}
+	
+	public int getCount() {
+		return count;
+	}
+	
 	@Override
 	public int hashCode() {
-		return (book.hashCode() + chapter + verse);
+		int hash = 42;
+		
+		hash = hash * 55 + book.hashCode();
+		hash = hash * 55 + chapter;
+		hash = hash * 55 + verse;
+		
+		return hash;
 	}
 	
 	/**

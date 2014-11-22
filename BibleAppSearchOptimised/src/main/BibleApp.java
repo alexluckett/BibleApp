@@ -7,7 +7,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Main class for bible app. Will include ability to load in bible,
@@ -244,7 +243,7 @@ public class BibleApp {
 	public void search(String statementToSearch) {
 		long start = System.currentTimeMillis();
 		
-		Set<Appearance> appearances = wordHistory.getAppearances(statementToSearch);
+		List<Appearance> appearances = wordHistory.getAppearances(statementToSearch);
 		
 		if(appearances != null && appearances.size() != 0) {
 			System.out.println("\"" + statementToSearch + "\" found! Occurances: " + appearances.size());

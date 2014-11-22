@@ -8,41 +8,20 @@ import java.util.*;
  * @author Alex Luckett <lucketta@aston.ac.uk>
  */
 public class WordMap {
-	private Map<String, Set<Appearance>> words = new HashMap<String, Set<Appearance>>(); // hashmap is O(1) retrieval time
-	
-	public WordMap() { }
-	
-//	public void addWord(String word, String book, int verse, int chapter) {
-//		word = word.toLowerCase(); // makes searching case insensistive
-//		Appearance appearance = new Appearance(book, chapter, verse);
-//		
-//		if(words.get(word) == null) { // no appearances have been logged
-//			HashSet<Appearance> appearances = new HashSet<Appearance>();
-//			appearances.add(appearance);
-//			
-//			words.put(word, appearances);
-//		} else { // already have appearances, so just add to that
-//			Set<Appearance> appearances = words.get(word);
-//			appearances.add(appearance);
-//			
-//			words.put(word, appearances);
-//		}
-//	}
+	private Map<String, List<Appearance>> words = new HashMap<String, List<Appearance>>(); // hashmap is O(1) retrieval time
 	
 	public void addWord(String word, String book, int verse, int chapter) {
-		word = word.toLowerCase(); // search is not case sensitive
-		
-		Set<Appearance> appearances = words.get(word);
+		List<Appearance> appearances = getAppearances(word); // search is not case sensitive
 		
 		if(appearances == null) { // no appearances have been logged
-			appearances = new HashSet<Appearance>();
+			appearances = new ArrayList<Appearance>(1000);
 			words.put(word, appearances);
 		}
 		
 		appearances.add(new Appearance(book, chapter, verse)); // set constructed, so add to it
 	}
 	
-	public Set<Appearance> getAppearances(String word) {
+	public List<Appearance> getAppearances(String word) {
 		return words.get(word.toLowerCase());
 	}
 }
