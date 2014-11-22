@@ -77,7 +77,7 @@ public class BibleApp {
 					chapter = new Chapter(chapterNumber++);
 					verseNumber = 1; // new chapter, must reset verse count to 1
 				} else if(!isLineEmpty && Character.isLetter(currentLine.trim().charAt(0))) {
-					// description stuff
+					// found a description, so ignore it. not part of spec.
 				} else if(!isLineEmpty) {
 					chapter.addVerse(
 						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber)
@@ -186,12 +186,16 @@ public class BibleApp {
 	 * Display the book selection to the user 
 	 */
 	public int getBookIdFromUser(Scanner sc) {
+		StringBuilder sb = new StringBuilder();
+		
 		System.out.println("Please enter the book number:");
 		for(int i = 0; i < parsedBooks.size(); i++){
-			System.out.println((i+1) + ": " + parsedBooks.get(i).getTitle());
+			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n");
 		}
 		
-		System.out.println("Please choice your selection: ");
+		System.out.println(sb);
+		
+		System.out.println("Please choose a book number: ");
 		return sc.nextInt() - 1; // take into account 0 based numbering
 	}
 	
@@ -221,17 +225,22 @@ public class BibleApp {
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
-	public void lookupChapter(int bookId, int chapterNumber) {		
+	public void lookupChapter(int bookId, int chapterNumber) {
+		StringBuilder sb = new StringBuilder();
+		
 		long startTime = System.currentTimeMillis();
 		
 		Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
 		List<Verse> v = answer.getVerses();
-		for(Verse verse : v){
-			System.out.println(verse.getText());
-		}
-		long endTime = System.currentTimeMillis();
-		System.out.println("Time Taken: " + (endTime - startTime) + " ms");
 		
+		for(Verse verse : v) {
+			sb.append(verse.getText() + "\n");
+		}
+		
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println(sb);
+		System.out.println("Time Taken: " + (endTime - startTime) + " ms");
 	}
 		
 
@@ -241,6 +250,8 @@ public class BibleApp {
 	 * @param statementToSearch search term
 	 */
 	public void search(String statementToSearch) {
+		StringBuilder sb = new StringBuilder();
+		
 		long start = System.currentTimeMillis();
 		
 		List<Appearance> appearances = wordHistory.getAppearances(statementToSearch);
@@ -249,7 +260,7 @@ public class BibleApp {
 			System.out.println("\"" + statementToSearch + "\" found! Occurances: " + appearances.size());
 			
 			for(Appearance appearance : appearances) {
-				System.out.println(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]");
+				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
 			}
 		} else {
 			System.out.println("No search results found.\n");
@@ -257,6 +268,7 @@ public class BibleApp {
 		
 		long end = System.currentTimeMillis();
 		
+		System.out.println(sb);
 		System.out.println("TIME TAKEN TO SEARCH: " + (end - start) + "ms");
 	}
 
@@ -280,6 +292,4 @@ public class BibleApp {
 
 		return new Verse(verseNumber, chapterNumber, line);
 	}
-
-
 }

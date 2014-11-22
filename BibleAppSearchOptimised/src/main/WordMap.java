@@ -14,7 +14,7 @@ public class WordMap {
 		List<Appearance> appearances = getAppearances(word); // search is not case sensitive
 		
 		if(appearances == null) { // no appearances have been logged
-			appearances = new ArrayList<Appearance>(1000);
+			appearances = new ArrayList<Appearance>(5000);
 			words.put(word, appearances);
 		}
 		
