@@ -7,6 +7,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Main class for bible app. Will include ability to load in bible,
@@ -14,7 +15,7 @@ import java.util.Scanner;
  * 
  * @author Alex Luckett <lucketta@aston.ac.uk>
  * @author Ashley Bridgwood <bridgwa1@aston.ac.uk>
- * @author Charandeep Rai
+ * @author Charandeep Rai <raics@aston.ac.uk>
  *
  */
 public class BibleApp {
@@ -202,7 +203,33 @@ public class BibleApp {
 	 * Searches through the books, and returns the verse which the word is found in
 	 */
 	public void verseByWord(String statementToSearch){
-		// Set<Appearance> appearances = wordHistory.getAppearances(statementToSearch); // this will return all the apperances of the search term. Case insensitive!
+		StringBuilder sb = new StringBuilder(); // I used System.out.println before, however i'm guessing this is the way you guys want it printed.  
+		long starttime = System.currentTimeMillis();
+	
+		 List<Appearance> searchWord = wordHistory.getAppearances(statementToSearch); 
+		 if(searchWord != null){
+			sb.append(statementToSearch + " found!" +  "\n");
+			// System.out.println("searchWord found!");
+			
+			for(Appearance appearance : searchWord) {
+			sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n");
+			//System.out.println(appearance.getBook() + " [" + appearance.getChapter() + ": " + appearance.getVerse() + "] \n" );	
+			
+			//sb.append(parsedBooks.get(appearance.getBook()) .getChapter(appearance.getChapter()) .getVerse(appearance.getVerse())); // I cant seem to get rid of an error asking to change the first get to int.
+		//System.out.println(parsedBooks.get(appearance.getBook()) .getChapter(appearance.getChapter()) .getVerse(appearance.getVerse()));
+		
+		 } 
+		 }else{
+			 sb.append("Word not found!");
+		 }
+		
+			//public List<Appearance> getAppearances(String word) {
+				//return words.get(word.toLowerCase());
+		
+		long endtime = System.currentTimeMillis();
+		System.out.println(sb);
+		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
+		//Set<Appearance> appearances = wordHistory.getAppearances(statementToSearch); // this will return all the apperances of the search term. Case insensitive!
 		// get verse content by using chapter and verse numbers from appearance
 		// e.g: parsedBooks.get(appearance.getBook).getChapter(appearance.getChapter).getVerse(appearance.getVerse) or something like that. Should be quick!
 	}
