@@ -63,6 +63,6 @@ public class StringUtils {
 			return word.substring(wordStart, wordLength);
 		}
 		
-		return word;
+		return word.substring(wordStart);
 	}
 }
