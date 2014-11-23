@@ -33,11 +33,9 @@ public class StringUtils {
 		int previous = 0;
 		
 		while((i = line.indexOf(' ', previous)) != -1) { // check the position of the next space for our new word. -1 is no more available.		
-			String word = line.substring(previous, i); // get word between last word and new
+			words[count++] = removePunctuation(line.substring(previous, i)); // get word between last word and new
 			
-			words[count++] = removePunctuation(word);
-			
-			previous = i+1;
+			previous = i + 1;
 		}
 		
 		words[count] = removePunctuation(line.substring(previous, line.length())); // last word!
