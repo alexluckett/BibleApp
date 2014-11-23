@@ -14,8 +14,7 @@ public class WordMap {
 		List<Appearance> appearances = getAppearances(word); // search is not case sensitive
 		
 		if(appearances == null) { // no appearances have been logged
-			
-			/* don't initialise with an initial value!this decreases performance since
+			/* Don't initialise with an initial value!this decreases performance since
 			 *  the actual word count could range anywhere between 0-9000 (estimate) */
 			appearances = new ArrayList<Appearance>();
 			words.put(word, appearances);

@@ -3,11 +3,9 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Main class for bible app. Will include ability to load in bible,
@@ -26,7 +24,8 @@ public class BibleApp {
 	
 	/**
 	 * Constructs a new BibleApp. No content currently.
-	 */	public BibleApp() {
+	 */
+	public BibleApp() {
 		long startTime = System.currentTimeMillis();
 		
 		for(int j = 0; j < bookNames.length; j++) {
@@ -189,14 +188,18 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder();
 		
 		for(int i = 0; i < parsedBooks.size(); i++){
-			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n");
+			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n"); // print out a list of book titles, numbered 1-n
 		}
 		
-		System.out.println("Please enter the book number:");
 		System.out.println(sb);
 		System.out.println("Please choose a book number: ");
 		
-		return sc.nextInt() - 1; // take into account 0 based numbering
+		int menuItem = sc.nextInt() - 1; // take into account 0 based numbering
+		
+		if(menuItem < 0 || menuItem > parsedBooks.size())
+			menuItem = -1;
+		
+		return menuItem; 
 	}
 	
 	/**
@@ -241,6 +244,7 @@ public class BibleApp {
 		long startTime = System.currentTimeMillis();
 		
 		Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber);
+		
 		long endTime = System.currentTimeMillis();
 		
 		System.out.println("Verse: " + answer.getText());
@@ -250,22 +254,25 @@ public class BibleApp {
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
-	public void lookupChapter(int bookId, int chapterNumber) {
-		StringBuilder sb = new StringBuilder();
-		
-		long startTime = System.currentTimeMillis();
-		
-		Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
-		List<Verse> v = answer.getVerses();
-		
-		for(Verse verse : v) {
-			sb.append(verse.getText() + "\n");
+	public void lookupChapter(int bookId, int chapterNumber) {if(bookId > 0 && chapterNumber > 0) {
+			StringBuilder sb = new StringBuilder();
+			
+			long startTime = System.currentTimeMillis();
+			
+			Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
+			List<Verse> v = answer.getVerses();
+			
+			for(Verse verse : v) {
+				sb.append(verse.getText() + "\n"); // print out each verse
+			}
+			
+			long endTime = System.currentTimeMillis();
+			
+			System.out.println(sb);
+			System.out.println("Time Taken: " + (endTime - startTime) + " ms");
+		} else {
+			System.out.println("Please enter a valid book ID and/or chapter number.\n");
 		}
-		
-		long endTime = System.currentTimeMillis();
-		
-		System.out.println(sb);
-		System.out.println("Time Taken: " + (endTime - startTime) + " ms");
 	}
 		
 
