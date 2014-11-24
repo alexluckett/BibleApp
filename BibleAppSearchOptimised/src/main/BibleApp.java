@@ -249,37 +249,39 @@ public class BibleApp {
 		
 		 List<Appearance> searchWord = wordHistory.getAppearances(statementToSearch); 
 		 
-		 for(int i = 0; i < searchWord.size(); i++){
+		
+		 
+		 if(searchWord != null){
+			sb.append(statementToSearch + " found!" +  "\n");
+			 
+			for(int i = 0; i < searchWord.size(); i++){
 			 System.out.println("VALUE BOOK: " + searchWord.get(i).getBook().toString());
 			 System.out.println("VALUE CHAPTER: " + searchWord.get(i).getChapter());
 			 System.out.println("VALUE VERSE: " + searchWord.get(i).getVerse());
-		 }
-		 if(searchWord != null){
-			sb.append(statementToSearch + " found!" +  "\n");
 						
 			for(Appearance appearance : searchWord) {
 				int bookId = 0;
-				for(int i = 0; i < parsedBooks.size(); i++){
-					if(parsedBooks.get(i).getTitle().equals(appearance.getBook())){
-						bookId = i;
+				for(int I = 0; I < parsedBooks.size(); I++){
+					if(parsedBooks.get(I).getTitle().equals(appearance.getBook())){
+						bookId = I;
 					}
 				}
 		sb.append("Book Raw Name: " +  parsedBooks.get(bookId).getFileName() + "\n");
 		sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] : " + parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()).getText() + " \n");
 		throw new Chaz("WARNING: Chaz code active");
-			//searchWord = sb.append(parsedBooks.get(appearance.getBook()) .getChapter(appearance.getChapter()) .getVerse(appearance.getVerse())); 
 		 } 
-		 }else{
+		 }
+		 }
+		 
+		 else{
 			 sb.append("Word not found!");
 		 }
-		
+		 
 			
 		long endtime = System.currentTimeMillis();
 		System.out.println(sb);
 		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
-		//Set<Appearance> appearances = wordHistory.getAppearances(statementToSearch); // this will return all the apperances of the search term. Case insensitive!
-		// get verse content by using chapter and verse numbers from appearance
-		// e.g: parsedBooks.get(appearance.getBook).getChapter(appearance.getChapter).getVerse(appearance.getVerse) or something like that. Should be quick!
+		
 	}
 	
 	/**
