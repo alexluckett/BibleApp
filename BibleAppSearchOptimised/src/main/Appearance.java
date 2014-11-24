@@ -38,10 +38,10 @@ public class Appearance {
 	public int hashCode() {
 		int hash = 42;
 		
-		hash = hash * 55 + book.hashCode();
+		hash = hash + book.hashCode();
 		hash = hash * 55 + chapter;
 		hash = hash * 55 + verse;
-		hash = hash * 55 + descriptionType.hashCode();
+		hash = hash + descriptionType.hashCode();
 		
 		return hash;
 	}
