@@ -90,6 +90,7 @@ public class BibleApp {
 					}
 				} else {
 					chapter.addVerse(parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.NONE));
+					verseNumber++;
 				}
 			}
 
