@@ -82,14 +82,14 @@ public class BibleApp {
 				} else if(!isLineEmpty && Character.isLetter(currentLine.trim().charAt(0))) { // condition met if is a description
 					if(chapterNumber < 1) {
 						book.setDescription(currentLine); // haven't processed a chapter yet, so it must be the book description
-						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.BOOK);
+						parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.BOOK);
 					} else {
 						chapter.setDescription(currentLine);
-						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.CHAPTER);
+						parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.CHAPTER);
 					}
 				} else if(!isLineEmpty) {
 					chapter.addVerse(
-						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.NONE)
+						parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.NONE)
 					);
 				}
 			}
@@ -319,9 +319,9 @@ public class BibleApp {
 	 * @param chapterNumber chapter number of this verse
 	 * @param isDescription true if line is a description
 	 * 
-	 * @return Verse object - completed verse
+	 * @return Verse if descriptionType is BOOK/CHAPTER, else null (not needed).
 	 */
-	private Verse parseVerse(String line, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
+	private Verse parseLine(String line, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		String[] words = StringUtils.splitWords(line);
 		
 		if(descriptionType == DescriptionType.NONE)
@@ -331,8 +331,11 @@ public class BibleApp {
 			if(word != null)
 				logAppearance(word, bookName, verseNumber, chapterNumber, descriptionType);
 		}
-
-		return new Verse(verseNumber, chapterNumber, line);
+		
+		if(descriptionType == DescriptionType.NONE)
+			return new Verse(verseNumber, chapterNumber, line);
+		
+		return null;
 	}
 	
 	private void logAppearance(String word, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
