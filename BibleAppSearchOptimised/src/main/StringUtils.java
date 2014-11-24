@@ -3,7 +3,7 @@ package main;
 /**
  * Utility functions for Strings.
  * 
- * @author Alex Luckett <lucketta@aston.ac.uk>
+ * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class StringUtils {
 	

@@ -7,6 +7,7 @@ import java.util.List;
 public class Book {
 	private final String title;
 	private final String fileName;
+	private String description;
 	private List<Chapter> chapters = new ArrayList<Chapter>(10); // need to keep order
 	
 	public Book(String fileName, String title) {
@@ -21,8 +22,7 @@ public class Book {
 	public String getFileName(){
 		return fileName;
 	}
-	
-	
+		
 	public void addChapter(Chapter chapter) {
 		if(chapter == null)
 			throw new InvalidParameterException("Chapter number cannot be null.");
@@ -39,6 +39,14 @@ public class Book {
 	
 	public List<Chapter> getChapters() {
 		return chapters;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 	
 //	public LinkedHashSet<Integer> getChapters() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Chapter {
 	private final int chapterNumber;
+	private String description;
 	private List<Verse> verses;
 	
 	public Chapter(int chapterNumber) {
@@ -14,6 +15,14 @@ public class Chapter {
 	
 	public int getChapterNumber() {
 		return chapterNumber;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 	
 	public void addVerse(Verse verse) {

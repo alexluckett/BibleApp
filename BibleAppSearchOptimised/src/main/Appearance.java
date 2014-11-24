@@ -6,14 +6,16 @@ package main;
  * @author Alex Luckett <lucketta@aston.ac.uk>
  */
 public class Appearance {
-	private String book;
-	private int chapter;
-	private int verse;
+	private final String book;
+	private final int chapter;
+	private final int verse;
+	private final DescriptionType descriptionType;
 	
-	public Appearance(String book, int chapter, int verse) {
+	public Appearance(String book, int chapter, int verse, DescriptionType descriptionType) {
 		this.book = book;
 		this.chapter = chapter;
 		this.verse = verse;
+		this.descriptionType = descriptionType;
 	}
 	
 	public String getBook() {
@@ -28,6 +30,10 @@ public class Appearance {
 		return verse;
 	}
 	
+	public DescriptionType descriptionType() {
+		return descriptionType;
+	}
+	
 	@Override
 	public int hashCode() {
 		int hash = 42;
@@ -35,6 +41,7 @@ public class Appearance {
 		hash = hash * 55 + book.hashCode();
 		hash = hash * 55 + chapter;
 		hash = hash * 55 + verse;
+		hash = hash * 55 + descriptionType.hashCode();
 		
 		return hash;
 	}
@@ -53,5 +60,9 @@ public class Appearance {
 		}
 		
 		return hashCode() == comparison.hashCode();
+	}
+	
+	public enum DescriptionType {
+		NONE, BOOK, CHAPTER
 	}
 }

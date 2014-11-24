@@ -5,15 +5,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import main.Appearance.DescriptionType;
 
 /**
  * Main class for bible app. Will include ability to load in bible,
  * search for text and go to certain chapters/verses via command line interface.
  * 
- * @author Alex Luckett <lucketta@aston.ac.uk>
- * @author Ashley Bridgwood <bridgwa1@aston.ac.uk>
- * @author Charandeep Rai <raics@aston.ac.uk>
+ * @author Alexander Luckett  <lucketta@aston.ac.uk>
+ * @author Ashley Bridgwood   <bridgwa1@aston.ac.uk>
+ * @author Charandeep Rai     <raics@aston.ac.uk>
  *
  */
 public class BibleApp {
@@ -77,15 +82,19 @@ public class BibleApp {
 					
 					chapter = new Chapter(chapterNumber++);
 					verseNumber = 1; // new chapter, must reset verse count to 1
-				} else if(!isLineEmpty && Character.isLetter(currentLine.trim().charAt(0))) {
-					// found a description, so ignore it. not part of spec.
+				} else if(!isLineEmpty && Character.isLetter(currentLine.trim().charAt(0))) { // condition met if is a description
+					if(chapterNumber < 1) {
+						book.setDescription(currentLine); // haven't processed a chapter yet, so it must be the book description
+						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.BOOK);
+					} else {
+						chapter.setDescription(currentLine);
+						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.CHAPTER);
+					}
 				} else if(!isLineEmpty) {
 					chapter.addVerse(
-						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber)
+						parseVerse(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.NONE)
 					);
 				}
-
-				
 			}
 
 			parsedBooks.add(book);
@@ -292,9 +301,14 @@ public class BibleApp {
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
 			
 			for(Appearance appearance : appearances) {
-				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
+				if(appearance.descriptionType() == DescriptionType.NONE) {
+					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
+				} else if(appearance.descriptionType() == DescriptionType.CHAPTER) {
+					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ": CHAPTER/PSALM DESCRIPTION]\n");
+				} else {
+					sb.append(appearance.getBook() + ": BOOK DESCRIPTION\n"); // print this again - search results may be truncated if too long
+				}
 			}
-			
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
 		} else {
 			sb.append("No search results found.\n");
@@ -312,18 +326,25 @@ public class BibleApp {
 	 * @param line verse to process
 	 * @param verseNumber number of this verse
 	 * @param chapterNumber chapter number of this verse
+	 * @param isDescription true if line is a description
 	 * 
 	 * @return Verse object - completed verse
 	 */
-	private Verse parseVerse(String line, String bookName, int verseNumber, int chapterNumber) {
+	private Verse parseVerse(String line, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		String[] words = StringUtils.splitWords(line);
-		words[0] = null; // first word is number, so ignore it
+		
+		if(descriptionType == DescriptionType.NONE)
+			words[0] = null; // first word is number if not a description, so ignore it
 		
 		for(String word : words) {
 			if(word != null)
-				wordHistory.addWord(word, bookName, verseNumber, chapterNumber);
+				logAppearance(word, bookName, verseNumber, chapterNumber, descriptionType);
 		}
 
 		return new Verse(verseNumber, chapterNumber, line);
+	}
+	
+	private void logAppearance(String word, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
+		wordHistory.addWord(word, bookName, verseNumber, chapterNumber, descriptionType);
 	}
 }
