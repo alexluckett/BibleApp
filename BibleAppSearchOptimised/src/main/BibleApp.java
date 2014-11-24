@@ -19,8 +19,6 @@ import main.Appearance.DescriptionType;
  *
  */
 public class BibleApp {
-	private File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
-
 	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
 	private WordMap wordHistory = new WordMap();
 	
@@ -28,6 +26,8 @@ public class BibleApp {
 	 * Constructs a new BibleApp. No content currently.
 	 */
 	public BibleApp() {
+		File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
+		
 		long startTime = System.currentTimeMillis();
 		
 		for(int j = 0; j < bookNames.length; j++) {
@@ -299,7 +299,7 @@ public class BibleApp {
 					sb.append(appearance.getBook() + ": BOOK DESCRIPTION\n"); // print this again - search results may be truncated if too long
 				}
 			}
-			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
+			sb.append("Occurances: " + appearances.size() + "\n");
 		} else {
 			sb.append("No search results found.\n");
 		}
