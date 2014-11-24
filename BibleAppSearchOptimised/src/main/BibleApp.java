@@ -215,29 +215,23 @@ public class BibleApp {
 	 * Searches through the books, and returns the verse which the word is found in
 	 */
 	public void verseByWord(String statementToSearch){
-		StringBuilder sb = new StringBuilder(); // I used System.out.println before, however i'm guessing this is the way you guys want it printed.  
+		StringBuilder sb = new StringBuilder(); 
 		long starttime = System.currentTimeMillis();
 	
 		 List<Appearance> searchWord = wordHistory.getAppearances(statementToSearch); 
 		 if(searchWord != null){
 			sb.append(statementToSearch + " found!" +  "\n");
-			// System.out.println("searchWord found!");
-			
+						
 			for(Appearance appearance : searchWord) {
-			sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n");
-			//System.out.println(appearance.getBook() + " [" + appearance.getChapter() + ": " + appearance.getVerse() + "] \n" );	
+		sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n");
 			
-			//sb.append(parsedBooks.get(appearance.getBook()) .getChapter(appearance.getChapter()) .getVerse(appearance.getVerse())); // I cant seem to get rid of an error asking to change the first get to int.
-		//System.out.println(parsedBooks.get(appearance.getBook()) .getChapter(appearance.getChapter()) .getVerse(appearance.getVerse()));
-		
+			//searchWord = sb.append(parsedBooks.get(appearance.getBook()) .getChapter(appearance.getChapter()) .getVerse(appearance.getVerse())); 
 		 } 
 		 }else{
 			 sb.append("Word not found!");
 		 }
 		
-			//public List<Appearance> getAppearances(String word) {
-				//return words.get(word.toLowerCase());
-		
+			
 		long endtime = System.currentTimeMillis();
 		System.out.println(sb);
 		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
