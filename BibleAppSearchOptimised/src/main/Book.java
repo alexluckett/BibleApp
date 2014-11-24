@@ -32,7 +32,7 @@ public class Book {
 	
 	public Chapter getChapter(int chapterNumber) {
 		if(chapterNumber == 0 || chapterNumber > chapters.size())
-			throw new InvalidParameterException("Chapter number cannot be less than 1.");
+			throw new InvalidParameterException("Chapter number is invalid (too big/small).");
 		
 		return chapters.get(chapterNumber - 1);
 	}

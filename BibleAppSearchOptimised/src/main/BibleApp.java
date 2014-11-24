@@ -225,13 +225,12 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder();
 		long startTime = System.currentTimeMillis();
 		
-		int currentVerseNumber = startVerseNumber;
-		int loopAmount  = (endVerseNumber - startVerseNumber);
-		
-		for(int i = 0; i <= loopAmount; i++){
-			String answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(currentVerseNumber).getText();
-			sb.append(answer + "\n");
-			currentVerseNumber++;
+		try {
+			for(int i = startVerseNumber; i <= endVerseNumber; i++)
+				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i).getText() + "\n");
+		} 
+		catch (Exception e) {
+			sb.append("Book/verse/chapter does not exist.");
 		}
 		
 		long endTime = System.currentTimeMillis();

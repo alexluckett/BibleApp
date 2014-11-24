@@ -34,7 +34,7 @@ public class Chapter {
 	
 	public Verse getVerse(int verseNumber) {
 		if(verseNumber == 0 || verseNumber > verses.size())
-			throw new IllegalArgumentException("Verse number cannot be less than 1.");
+			throw new IllegalArgumentException("Verse number is invalid (too big/small).");
 		
 		return verses.get(verseNumber - 1); // 0 based numbering!
 	}
