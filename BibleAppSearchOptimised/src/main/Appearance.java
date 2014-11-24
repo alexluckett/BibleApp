@@ -36,9 +36,7 @@ public class Appearance {
 	
 	@Override
 	public int hashCode() {
-		int hash = 42;
-		
-		hash = hash + book.hashCode();
+		int hash = book.hashCode();
 		hash = hash * 55 + chapter;
 		hash = hash * 55 + verse;
 		hash = hash + descriptionType.hashCode();
