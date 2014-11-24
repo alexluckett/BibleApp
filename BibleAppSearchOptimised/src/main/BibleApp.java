@@ -118,6 +118,7 @@ public class BibleApp {
 				menu.append("| 2. Lookup Chapter            |\n");
 				menu.append("| 3. Lookup verse              |\n");
 				menu.append("| 4. Find verse by word        |\n");
+				menu.append("| 5. Find range of verses      |\n");
 				menu.append("| 0. Exit                      |\n");
 				menu.append("================================\n");
 				menu.append("Please enter the activity number you wish to use: ");
@@ -130,6 +131,7 @@ public class BibleApp {
 				userChoice = sc.nextInt();
 			} catch (Exception e) {
 				System.err.println("Invalid option.");
+				displayMenuSystem();
 			}
 		
 			switch(userChoice) {
@@ -153,7 +155,10 @@ public class BibleApp {
 				case 4:
 					verseByWord(getWordInformation(sc));
 					
-					break;	
+					break;
+				case 5:
+					rangeOfVerses(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc), getVerseInformation(sc));
+					break;
 				
 				default:
 					System.out.println("\nInvalid option!");
@@ -194,7 +199,7 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder();
 		
 		for(int i = 0; i < parsedBooks.size(); i++){
-			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n"); // print out a list of book titles, numbered 1-n
+			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + " (" + parsedBooks.get(i).getFileName() + ")\n"); // print out a list of book titles, numbered 1-n
 		}
 		
 		System.out.println(sb);
@@ -206,6 +211,27 @@ public class BibleApp {
 			menuItem = -1;
 		
 		return menuItem; 
+	}
+	
+	/**
+	 * Get verses from a range of verse numbers
+	 */
+	public void rangeOfVerses(int bookId, int chapterNumber, int startVerseNumber, int endVerseNumber){
+		StringBuilder sb = new StringBuilder();
+		long startTime = System.currentTimeMillis();
+		
+		int currentVerseNumber = startVerseNumber;
+		int loopAmount  = (endVerseNumber - startVerseNumber);
+		
+		for(int i = 0; i <= loopAmount; i++){
+			String answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(currentVerseNumber).getText();
+			sb.append(answer + "\n");
+			currentVerseNumber++;
+		}
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println(sb);
+		System.out.println("Time taken: " + (endTime - startTime) + " ms");
 	}
 	
 	/**
