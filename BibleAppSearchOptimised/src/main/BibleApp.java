@@ -71,7 +71,8 @@ public class BibleApp {
 			String currentLine;
 			
 			while((currentLine = reader.readLine()) != null) {
-				boolean isLineEmpty = currentLine.length() == 0;
+				if(currentLine.isEmpty())
+					continue; // don't care if line is empty - go to next iteration
 
 				if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {
 					if(chapterNumber != 0)
@@ -79,18 +80,16 @@ public class BibleApp {
 					
 					chapter = new Chapter(chapterNumber++);
 					verseNumber = 1; // new chapter, must reset verse count to 1
-				} else if(!isLineEmpty && Character.isLetter(currentLine.trim().charAt(0))) { // condition met if is a description
-					if(chapterNumber < 1) {
+				} else if(Character.isLetter(currentLine.trim().charAt(0))) { // condition met if is a description
+					if(chapterNumber == 0) {
 						book.setDescription(currentLine); // haven't processed a chapter yet, so it must be the book description
 						parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.BOOK);
 					} else {
 						chapter.setDescription(currentLine);
 						parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.CHAPTER);
 					}
-				} else if(!isLineEmpty) {
-					chapter.addVerse(
-						parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.NONE)
-					);
+				} else {
+					chapter.addVerse(parseLine(currentLine, bookTitle, verseNumber, chapterNumber, DescriptionType.NONE));
 				}
 			}
 
