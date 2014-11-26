@@ -162,7 +162,7 @@ public class BibleApp {
 					
 					break;
 				case 5:
-					rangeOfVerses(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc), getVerseInformation(sc));
+					rangeOfVerses(getBookIdFromUser(sc), getChapterInformation(sc), getVerseRangeInformation(sc));
 					break;
 				
 				default:
@@ -173,6 +173,13 @@ public class BibleApp {
 		
 	}
 	
+	/**
+	 * Get a range of verse from the user
+	 */
+	public String getVerseRangeInformation(Scanner sc){
+		System.out.println("Please enter the range of verses you would like (EG: 1-5):");
+		return sc.next();
+	}
 	/**
 	 * Get words from the user
 	 */
@@ -221,7 +228,12 @@ public class BibleApp {
 	/**
 	 * Get verses from a range of verse numbers
 	 */
-	public void rangeOfVerses(int bookId, int chapterNumber, int startVerseNumber, int endVerseNumber){
+	public void rangeOfVerses(int bookId, int chapterNumber, String verses){
+		String start = verses.substring(0,1);
+		String end = verses.substring(2,3);
+		int startVerseNumber = Integer.parseInt(start);
+		int endVerseNumber = Integer.parseInt(end);
+		
 		StringBuilder sb = new StringBuilder();
 		long startTime = System.currentTimeMillis();
 		
