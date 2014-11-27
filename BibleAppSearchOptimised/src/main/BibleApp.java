@@ -153,12 +153,7 @@ public class BibleApp {
 					
 					break;
 				case 4:
-				try {
 					verseByWord(getWordInformation(sc));
-				} catch (Chaz e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 					
 					break;
 				case 5:
@@ -254,7 +249,7 @@ public class BibleApp {
 	 * Searches through the books, and returns the verse which the word is found in
 	 * @throws Chaz 
 	 */
-	public void verseByWord(String statementToSearch) throws Chaz{
+	public void verseByWord(String statementToSearch){
 		StringBuilder sb = new StringBuilder(); 
 		long starttime = System.currentTimeMillis();
 		
@@ -279,7 +274,6 @@ public class BibleApp {
 				}
 		sb.append("Book Raw Name: " +  parsedBooks.get(bookId).getFileName() + "\n");
 		sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] : " + parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()).getText() + " \n");
-		throw new Chaz("WARNING: Chaz code active");
 		 } 
 		 }
 		 }
