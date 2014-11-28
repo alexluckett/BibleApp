@@ -31,10 +31,10 @@ public class Book {
 	}
 	
 	public Chapter getChapter(int chapterNumber) {
-		if(chapterNumber == 0 || chapterNumber > chapters.size())
+		if(chapterNumber > chapters.size())
 			throw new InvalidParameterException("Chapter number is invalid (too big/small).");
 		
-		return chapters.get(chapterNumber - 1);
+		return chapters.get(chapterNumber-1);
 	}
 	
 	public List<Chapter> getChapters() {

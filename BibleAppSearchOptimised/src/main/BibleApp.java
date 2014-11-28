@@ -93,7 +93,8 @@ public class BibleApp {
 					verseNumber++;
 				}
 			}
-
+			
+			book.addChapter(chapter); // add last book of last chapter manually -> can't auto detect because no new line that starts with "CHAPTER/PSALM"
 			parsedBooks.add(book);
 			reader.close();
 		} catch (Exception e) {
@@ -235,8 +236,7 @@ public class BibleApp {
 		try {
 			for(int i = startVerseNumber; i <= endVerseNumber; i++)
 				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i).getText() + "\n");
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			sb.append("Book/verse/chapter does not exist.");
 		}
 		
@@ -249,73 +249,77 @@ public class BibleApp {
 	 * Searches through the books, and returns the verse which the word is found in
 	 * @throws Chaz 
 	 */
-	public void verseByWord(String statementToSearch){
+	public void verseByWord(String statementToSearch) {
 		StringBuilder sb = new StringBuilder(); 
 		long starttime = System.currentTimeMillis();
-		
-		 List<Appearance> searchWord = wordHistory.getAppearances(statementToSearch); 
-		 
-		
-		 
-		 if(searchWord != null){
+
+		List<Appearance> searchWord = wordHistory.getAppearances(statementToSearch); 
+
+		if(searchWord != null){
 			sb.append(statementToSearch + " found!" +  "\n");
-			 
-			for(int i = 0; i < searchWord.size(); i++){
-			 System.out.println("VALUE BOOK: " + searchWord.get(i).getBook().toString());
-			 System.out.println("VALUE CHAPTER: " + searchWord.get(i).getChapter());
-			 System.out.println("VALUE VERSE: " + searchWord.get(i).getVerse());
-						
+
 			for(Appearance appearance : searchWord) {
 				int bookId = 0;
-				for(int I = 0; I < parsedBooks.size(); I++){
-					if(parsedBooks.get(I).getTitle().equals(appearance.getBook())){
-						bookId = I;
+				for(int appearanceId = 0; appearanceId < parsedBooks.size(); appearanceId++){
+					if(parsedBooks.get(appearanceId).getTitle().equals(appearance.getBook())){
+						bookId = appearanceId;
 					}
 				}
-		sb.append("Book Raw Name: " +  parsedBooks.get(bookId).getFileName() + "\n");
-		sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] : " + parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()).getText() + " \n");
-		 } 
-		 }
-		 }
-		 
-		 else{
-			 sb.append("Word not found!");
-		 }
-		 
-			
+				sb.append("Book Raw Name: " +  parsedBooks.get(bookId).getFileName() + "\n");
+				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]: " + parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n");
+			} 
+		} else {
+			sb.append("Word not found!");
+		}
+
+
 		long endtime = System.currentTimeMillis();
 		System.out.println(sb);
 		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
-		
+
 	}
 	
 	/**
 	 * Searches through books to find the verse which is needed
 	 */
 	public void lookupVerse(int bookId, int chapterNumber, int verseNumber) {
+		StringBuilder sb = new StringBuilder();
+		
 		long startTime = System.currentTimeMillis();
 		
-		Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber);
+		try {
+			Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber);
+			sb.append("Verse: " + answer.getText() + "\n");
+		} catch (Exception e) {
+			sb.append("Book/chapter/verse number is incorrect.\n");
+		}
 		
 		long endTime = System.currentTimeMillis();
 		
-		System.out.println("Verse: " + answer.getText());
+		System.out.println(sb);
 		System.out.println("Time taken: " + (endTime - startTime) + " ms");
 	}
 	
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
-	public void lookupChapter(int bookId, int chapterNumber) {if(bookId > 0 && chapterNumber > 0) {
+	public void lookupChapter(int bookId, int chapterNumber) {
+		if(bookId > 0 && chapterNumber > 0) {
 			StringBuilder sb = new StringBuilder();
 			
 			long startTime = System.currentTimeMillis();
 			
-			Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
-			List<Verse> v = answer.getVerses();
-			
-			for(Verse verse : v) {
-				sb.append(verse.getText() + "\n"); // print out each verse
+			try {
+				Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
+				List<Verse> v = answer.getVerses();
+				
+				sb.append("Chapter " + answer.getChapterNumber() + "\n");
+				sb.append("Description: " + answer.getDescription() + "\n");
+				for(Verse verse : v) {
+					sb.append(verse.getText() + "\n"); // print out each verse
+				}
+			} catch (Exception e) {
+				sb.append("Invalid chapter or book number");
 			}
 			
 			long endTime = System.currentTimeMillis();
@@ -371,7 +375,7 @@ public class BibleApp {
 	 * @param chapterNumber chapter number of this verse
 	 * @param isDescription true if line is a description
 	 * 
-	 * @return Verse if descriptionType is BOOK/CHAPTER, else null (not needed).
+	 * @return Verse if descriptionType is BOOK/CHAPTER, else NONE.
 	 */
 	private Verse parseLine(String line, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		String[] words = StringUtils.splitWords(line);
@@ -390,6 +394,14 @@ public class BibleApp {
 		return null;
 	}
 	
+	/**
+	 * Logs an appearance of a single word, given:
+	 * @param word word to log
+	 * @param bookName
+	 * @param verseNumber
+	 * @param chapterNumber
+	 * @param descriptionType description enum (BOOK/CHAPTER/NONE/ETC.)
+	 */
 	private void logAppearance(String word, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		wordHistory.addWord(word, bookName, verseNumber, chapterNumber, descriptionType);
 	}
