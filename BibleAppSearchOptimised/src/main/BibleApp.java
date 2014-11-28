@@ -224,7 +224,7 @@ public class BibleApp {
 	/**
 	 * Get verses from a range of verse numbers
 	 */
-	public void rangeOfVerses(int bookId, int chapterNumber, String verses){
+	public void rangeOfVerses(int bookId, int chapterNumber, String verses) {
 		String start = verses.substring(0,1);
 		String end = verses.substring(2,3);
 		int startVerseNumber = Integer.parseInt(start);
@@ -235,7 +235,7 @@ public class BibleApp {
 		
 		try {
 			for(int i = startVerseNumber; i <= endVerseNumber; i++)
-				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i).getText() + "\n");
+				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i-1).getText() + "\n");
 		} catch (Exception e) {
 			sb.append("Book/verse/chapter does not exist.");
 		}
@@ -247,7 +247,6 @@ public class BibleApp {
 	
 	/**
 	 * Searches through the books, and returns the verse which the word is found in
-	 * @throws Chaz 
 	 */
 	public void verseByWord(String statementToSearch) {
 		StringBuilder sb = new StringBuilder(); 
@@ -266,7 +265,8 @@ public class BibleApp {
 					}
 				}
 				sb.append("Book Raw Name: " +  parsedBooks.get(bookId).getFileName() + "\n");
-				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]: " + parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n");
+				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]: "
+						+ parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n");
 			} 
 		} else {
 			sb.append("Word not found!");
@@ -276,7 +276,6 @@ public class BibleApp {
 		long endtime = System.currentTimeMillis();
 		System.out.println(sb);
 		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
-
 	}
 	
 	/**
@@ -310,11 +309,13 @@ public class BibleApp {
 			long startTime = System.currentTimeMillis();
 			
 			try {
-				Chapter answer = parsedBooks.get(bookId).getChapter(chapterNumber);
-				List<Verse> v = answer.getVerses();
+				Chapter chapterFound = parsedBooks.get(bookId).getChapter(chapterNumber);
+				List<Verse> v = chapterFound.getVerses();
 				
-				sb.append("Chapter " + answer.getChapterNumber() + "\n");
-				sb.append("Description: " + answer.getDescription() + "\n");
+				sb.append("Chapter " + chapterFound.getChapterNumber()+1 + "\n");				
+				if(chapterFound.getDescription() != null)
+						sb.append("Description: " + chapterFound.getDescription() + "\n");
+				
 				for(Verse verse : v) {
 					sb.append(verse.getText() + "\n"); // print out each verse
 				}
