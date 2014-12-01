@@ -287,7 +287,7 @@ public class BibleApp {
 		long startTime = System.currentTimeMillis();
 		
 		try {
-			Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber);
+			Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber-1);
 			sb.append("Verse: " + answer.getText() + "\n");
 		} catch (Exception e) {
 			sb.append("Book/chapter/verse number is incorrect.\n");
@@ -303,7 +303,7 @@ public class BibleApp {
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
 	public void lookupChapter(int bookId, int chapterNumber) {
-		if(bookId > 0 && chapterNumber > 0) {
+		if(bookId >= 0 && chapterNumber > 0) {
 			StringBuilder sb = new StringBuilder();
 			
 			long startTime = System.currentTimeMillis();
