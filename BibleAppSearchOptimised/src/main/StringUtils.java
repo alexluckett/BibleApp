@@ -52,15 +52,22 @@ public class StringUtils {
 	 */
 	public static String removePunctuation(String word) {
 		int wordStart = 0;
-		int wordLength = word.length() - 1;
+		int wordLength = word.length();
+		boolean changed = false;
 		
-		if(word.length() > 2 && !Character.isLetter(word.charAt(wordStart)))
+		if(word.length() > 2 && !Character.isLetter(word.charAt(wordStart))) {
 			wordStart++; // remove any symbols at start of words
-		
-		if(word.length() > 1 && !Character.isLetter(word.charAt(wordLength))) { // check the string has more than one letter, and if the last char is not a letter
-			return word.substring(wordStart, wordLength);
+			changed = true;
 		}
 		
-		return word.substring(wordStart);
+		if(word.length() > 1 && !Character.isLetter(word.charAt(wordLength-1))) { // check the string has more than one letter, and if the last char is not a letter
+			wordLength = wordLength - 1;
+			changed = true;
+		}
+		
+		if(changed)
+			return removePunctuation(word.substring(wordStart, wordLength)); // recursively remove 
+		else
+			return word;
 	}
 }
