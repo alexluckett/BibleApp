@@ -8,13 +8,28 @@ import java.util.Map;
 import main.Appearance.DescriptionType;
 
 /**
- * Maps a list of words to a set of appearances. Used for quick searching.
+ * Maps a list of case insensitive words to a set of appearances. Used for quick searching.
+ * 
+ * Wrapper class for a HashMap, holding a string key and a list<appearance> value.
  * 
  * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class WordMap {
 	private Map<String, List<Appearance>> words = new HashMap<String, List<Appearance>>(); // hashmap is O(1) retrieval time
 	
+	/**
+	 * Adds a word into the WordMap. Logs an appearance of a word within a book, chapter and verse. Can be used to quickly
+	 * find where a word appears within the bible.
+	 * 
+	 * Also takes in a DesscriptionType enum to represent if the current word is part of a description. If so, the enum will
+	 * specify which part or DescriptionType.NONE for no description.
+	 * 
+	 * @param word to log
+	 * @param book where word appears
+	 * @param verse where word appears
+	 * @param chapter where word appears
+	 * @param descriptionType type of description word is part of (DescriptionType.NONE if not)
+	 */
 	public void addWord(String word, String book, int verse, int chapter, DescriptionType descriptionType) {		
 		word = word.toLowerCase();
 		
@@ -30,7 +45,22 @@ public class WordMap {
 		appearances.add(new Appearance(book, chapter, verse, descriptionType)); // set constructed, so add to it
 	}
 	
+	/**
+	 * Get a list of appearances for a specific word. Case insensitive.
+	 * 
+	 * @param word - search term
+	 * @return List<Appearances> where the word appears
+	 */
 	public List<Appearance> getAppearances(String word) {
 		return words.get(word.toLowerCase());
+	}
+	
+	/**
+	 * Returns the amount of unique words (case insensitive) held within the WordMap.
+	 * 
+	 * @return int size of wordmap
+	 */
+	public int size() {
+		return words.size();
 	}
 }
