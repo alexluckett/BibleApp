@@ -15,7 +15,9 @@ import main.Appearance.DescriptionType;
  * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class WordMap {
-	private Map<String, List<Appearance>> words = new HashMap<String, List<Appearance>>(); // hashmap is O(1) retrieval time
+	private Map<String, List<Appearance>> words = new HashMap<String, List<Appearance>>(12800, 1);
+	// hashmap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
+	// 1 in constructor is the load factor to determine when to double in size - as it's 1, it means it won't double until 12800
 	
 	/**
 	 * Adds a word into the WordMap. Logs an appearance of a word within a book, chapter and verse. Can be used to quickly

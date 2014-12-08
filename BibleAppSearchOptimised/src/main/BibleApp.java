@@ -37,6 +37,7 @@ public class BibleApp {
 		long endTime = System.currentTimeMillis();
 		
 		System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
+		System.out.println("Total unique words (case insensitive): " + wordHistory.size());
 	}
 
 	/**
