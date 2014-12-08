@@ -5,13 +5,13 @@ package main;
  * 
  * @author Alex Luckett <lucketta@aston.ac.uk>
  */
-public class Appearance {
+public class WordAppearance {
 	private final String book;
 	private final int chapter;
 	private final int verse;
 	private final DescriptionType descriptionType;
 	
-	public Appearance(String book, int chapter, int verse, DescriptionType descriptionType) {
+	public WordAppearance(String book, int chapter, int verse, DescriptionType descriptionType) {
 		this.book = book;
 		this.chapter = chapter;
 		this.verse = verse;
@@ -49,12 +49,12 @@ public class Appearance {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		Appearance comparison;
+		WordAppearance comparison;
 		
-		if(!(obj instanceof Appearance)) { // can't be equal if they're not the same type!
+		if(!(obj instanceof WordAppearance)) { // can't be equal if they're not the same type!
 			return false;
 		} else {
-			comparison = (Appearance) obj;
+			comparison = (WordAppearance) obj;
 		}
 		
 		return hashCode() == comparison.hashCode();

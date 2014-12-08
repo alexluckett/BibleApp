@@ -5,17 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.Appearance.DescriptionType;
+import main.WordAppearance.DescriptionType;
 
 /**
  * Maps a list of case insensitive words to a set of appearances. Used for quick searching.
  * 
- * Wrapper class for a HashMap, holding a string key and a list<appearance> value.
+ * Wrapper class for a HashMap, holding a String key (the word) and a List<WordAppearance> value (where it appears).
  * 
  * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class WordMap {
-	private Map<String, List<Appearance>> words = new HashMap<String, List<Appearance>>(12800, 1);
+	private Map<String, List<WordAppearance>> words = new HashMap<String, List<WordAppearance>>(12800, 1);
 	// hashmap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
 	// 1 in constructor is the load factor to determine when to double in size - as it's 1, it means it won't double until 12800
 	
@@ -35,16 +35,16 @@ public class WordMap {
 	public void addWord(String word, String book, int verse, int chapter, DescriptionType descriptionType) {		
 		word = word.toLowerCase();
 		
-		List<Appearance> appearances = getAppearances(word); // search is not case sensitive
+		List<WordAppearance> appearances = getAppearances(word); // search is not case sensitive
 		
 		if(appearances == null) { // no appearances have been logged
 			/* Don't initialise with an initial value! This decreases performance since
 			 *  the actual word count could range anywhere between 0-9000 (estimate) */
-			appearances = new ArrayList<Appearance>();
+			appearances = new ArrayList<WordAppearance>();
 			words.put(word, appearances);
 		}
 		
-		appearances.add(new Appearance(book, chapter, verse, descriptionType)); // set constructed, so add to it
+		appearances.add(new WordAppearance(book, chapter, verse, descriptionType)); // set constructed, so add to it
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class WordMap {
 	 * @param word - search term
 	 * @return List<Appearances> where the word appears
 	 */
-	public List<Appearance> getAppearances(String word) {
+	public List<WordAppearance> getAppearances(String word) {
 		return words.get(word.toLowerCase());
 	}
 	

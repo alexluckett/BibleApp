@@ -13,6 +13,21 @@ import org.junit.Test;
  */
 public class TestStringUtils {
 	
+	@Test
+	public void testSplit() {
+		String[] splitWords = StringUtils.splitWords("Hello everybody. I love programming in Java!", 7);
+		
+		assertTrue(splitWords.length == 7);
+		
+		assertTrue(splitWords[0].equals("Hello"));
+		assertTrue(splitWords[1].equals("everybody"));
+		assertTrue(splitWords[2].equals("I"));
+		assertTrue(splitWords[3].equals("love"));
+		assertTrue(splitWords[4].equals("programming"));
+		assertTrue(splitWords[5].equals("in"));
+		assertTrue(splitWords[6].equals("Java"));
+	}
+	
 	/**
 	 * Asserts that punctuation is correctly removed from words.
 	 */
@@ -43,6 +58,6 @@ public class TestStringUtils {
 		for(int i = 0; i < word5chars.length; i++) {
 			assertTrue(Character.isAlphabetic(word5chars[i]));
 		}
-			
 	}
+	
 }

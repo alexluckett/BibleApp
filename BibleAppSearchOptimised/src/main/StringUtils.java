@@ -26,7 +26,7 @@ public class StringUtils {
 	 * @return String[] of words
 	 */
 	public static String[] splitWords(String line, int maxWords) {
-		String[] words = new String[maxWords]; // rough maximum words per verse 
+		String[] words = new String[maxWords]; // rough maximum words per line 
 		
 		int count = 0;
 		int i = 0;

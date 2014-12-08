@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import main.Appearance.DescriptionType;
+import main.WordAppearance.DescriptionType;
 
 /**
  * Main class for bible app. Will include ability to load in bible,
@@ -253,12 +253,12 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder(); 
 		long starttime = System.currentTimeMillis();
 
-		List<Appearance> searchWord = wordHistory.getAppearances(statementToSearch); 
+		List<WordAppearance> searchWord = wordHistory.getAppearances(statementToSearch); 
 
 		if(searchWord != null){
 			sb.append(statementToSearch + " found!" +  "\n");
 
-			for(Appearance appearance : searchWord) {
+			for(WordAppearance appearance : searchWord) {
 				int bookId = 0;
 				for(int appearanceId = 0; appearanceId < parsedBooks.size(); appearanceId++){
 					if(parsedBooks.get(appearanceId).getTitle().equals(appearance.getBook())){
@@ -344,12 +344,12 @@ public class BibleApp {
 		
 		long start = System.currentTimeMillis();
 		
-		List<Appearance> appearances = wordHistory.getAppearances(statementToSearch);
+		List<WordAppearance> appearances = wordHistory.getAppearances(statementToSearch);
 		
 		if(appearances != null && appearances.size() != 0) {
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
 			
-			for(Appearance appearance : appearances) {
+			for(WordAppearance appearance : appearances) {
 				if(appearance.descriptionType() == DescriptionType.NONE) {
 					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
 				} else if(appearance.descriptionType() == DescriptionType.CHAPTER) {
