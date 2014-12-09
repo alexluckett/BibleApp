@@ -217,7 +217,7 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder();
 
 		for(int i = 0; i < parsedBooks.size(); i++){
-			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + " (" + parsedBooks.get(i).getFileName() + ")\n"); // print out a list of book titles, numbered 1-n
+			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n"); // print out a list of book titles, numbered 1-n
 		}
 
 		System.out.println(sb);
