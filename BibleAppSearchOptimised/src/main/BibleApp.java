@@ -3,8 +3,9 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.List;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import main.WordAppearance.DescriptionType;
@@ -21,23 +22,35 @@ import main.WordAppearance.DescriptionType;
 public class BibleApp {
 	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
 	private WordMap wordHistory = new WordMap();
-	
+
 	/**
 	 * Constructs a new BibleApp. No content currently.
 	 */
 	public BibleApp() {
-		File[] bookNames = (new File("data")).listFiles(); // retrieves a list of all files within the data folder (source files)
+		URL dataPath = this.getClass().getResource("../data/");
+		File dataFolder = null;
+		File[] bookNames = null;
 		
-		long startTime = System.currentTimeMillis();
-		
-		for(int j = 0; j < bookNames.length; j++) {
-			readInFile(bookNames[j].getName());
+		if(dataPath != null) {
+			dataFolder = new File(dataPath.getFile()); // retrieves a list of all files within the data folder (source files);
+			bookNames = dataFolder.listFiles(); // retrieves a list of all files within the data folder (source files)
 		}
 		
-		long endTime = System.currentTimeMillis();
-		
-		System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
-		System.out.println("Total unique words (case insensitive): " + wordHistory.size());
+		long startTime = System.currentTimeMillis();
+
+		if(bookNames != null && bookNames.length > 0) {
+			for(int j = 0; j < bookNames.length; j++) {
+				readInFile(bookNames[j].getAbsolutePath());
+			}
+
+			long endTime = System.currentTimeMillis();
+
+			System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
+			System.out.println("Total unique words (case insensitive): " + wordHistory.size());
+		} else {
+			System.err.println("\"data\" subdirectory is empty or does not exist. Please create directory with text files within.\n");
+		}
+
 	}
 
 	/**
@@ -60,7 +73,7 @@ public class BibleApp {
 	 */
 	public void readInFile(String fileName) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/" + fileName));
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
 			String bookTitle = reader.readLine(); // first line is always the book title
 			int verseNumber = 1;
@@ -68,9 +81,9 @@ public class BibleApp {
 
 			Book book = new Book(fileName, bookTitle);
 			Chapter chapter = null;
-			
+
 			String currentLine;
-			
+
 			while((currentLine = reader.readLine()) != null) {
 				if(currentLine.isEmpty())
 					continue; // don't care if line is empty - go to next iteration
@@ -78,7 +91,7 @@ public class BibleApp {
 				if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {
 					if(chapterNumber != 0)
 						book.addChapter(chapter);
-					
+
 					chapter = new Chapter(chapterNumber++);
 					verseNumber = 1; // new chapter, must reset verse count to 1
 				} else if(Character.isLetter(currentLine.trim().charAt(0))) { // condition met if is a description
@@ -94,7 +107,7 @@ public class BibleApp {
 					verseNumber++;
 				}
 			}
-			
+
 			book.addChapter(chapter); // add last book of last chapter manually -> can't auto detect because no new line that starts with "CHAPTER/PSALM"
 			parsedBooks.add(book);
 			reader.close();
@@ -103,15 +116,15 @@ public class BibleApp {
 			//e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Displays the menu screen and handles use choices
 	 */
 	public void displayMenuSystem() {
 		Scanner sc = new Scanner(System.in);
-		
+
 		boolean finished = false;
-		
+
 		do {
 			StringBuilder menu = new StringBuilder();
 			{
@@ -126,50 +139,50 @@ public class BibleApp {
 				menu.append("Please enter the activity number you wish to use: ");
 			}
 			System.out.print(menu);
-			
+
 			int userChoice = 0; 
-			
+
 			try {
 				userChoice = sc.nextInt();
 			} catch (Exception e) {
 				System.err.println("Invalid option.");
 				displayMenuSystem();
 			}
-		
+
 			switch(userChoice) {
-				case 0:
-					System.out.println("Thank you for using BibleApp! (BibleApp Terminated)");
-					finished = true;
-					
-					break;	
-				case 1:
-					search(getWordInformation(sc));
-					
-					break;
-				case 2:
-					lookupChapter(getBookIdFromUser(sc), getChapterInformation(sc));
-					
-					break;
-				case 3:
-					lookupVerse(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc));
-					
-					break;
-				case 4:
-					verseByWord(getWordInformation(sc));
-					
-					break;
-				case 5:
-					rangeOfVerses(getBookIdFromUser(sc), getChapterInformation(sc), getVerseRangeInformation(sc));
-					break;
-				
-				default:
-					System.out.println("\nInvalid option!");
+			case 0:
+				System.out.println("Thank you for using BibleApp! (BibleApp Terminated)");
+				finished = true;
+
+				break;	
+			case 1:
+				search(getWordInformation(sc));
+
+				break;
+			case 2:
+				lookupChapter(getBookIdFromUser(sc), getChapterInformation(sc));
+
+				break;
+			case 3:
+				lookupVerse(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc));
+
+				break;
+			case 4:
+				verseByWord(getWordInformation(sc));
+
+				break;
+			case 5:
+				rangeOfVerses(getBookIdFromUser(sc), getChapterInformation(sc), getVerseRangeInformation(sc));
+				break;
+
+			default:
+				System.out.println("\nInvalid option!");
 			}
-			
+
 		} while(!finished);
-		
+
 	}
-	
+
 	/**
 	 * Get a range of verse from the user
 	 */
@@ -184,7 +197,7 @@ public class BibleApp {
 		System.out.println("Please enter the word you are looking for: ");
 		return sc.next();
 	}
-	
+
 	/**
 	 * Get chapter number from the user
 	 */
@@ -192,7 +205,7 @@ public class BibleApp {
 		System.out.println("Please enter the chapter number: ");
 		return sc.nextInt();
 	}
-	
+
 	/**
 	 * Get verse number from the user
 	 */
@@ -200,28 +213,28 @@ public class BibleApp {
 		System.out.println("Please enter the verse number: ");
 		return sc.nextInt();
 	}
-	
+
 	/**
 	 * Display the book selection to the user 
 	 */
 	public int getBookIdFromUser(Scanner sc) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		for(int i = 0; i < parsedBooks.size(); i++){
 			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + " (" + parsedBooks.get(i).getFileName() + ")\n"); // print out a list of book titles, numbered 1-n
 		}
-		
+
 		System.out.println(sb);
 		System.out.println("Please choose a book number: ");
-		
+
 		int menuItem = sc.nextInt() - 1; // take into account 0 based numbering
-		
+
 		if(menuItem < 0 || menuItem > parsedBooks.size())
 			menuItem = -1;
-		
+
 		return menuItem; 
 	}
-	
+
 	/**
 	 * Get verses from a range of verse numbers
 	 */
@@ -230,22 +243,22 @@ public class BibleApp {
 		String end = verses.substring(2,3);
 		int startVerseNumber = Integer.parseInt(start);
 		int endVerseNumber = Integer.parseInt(end);
-		
+
 		StringBuilder sb = new StringBuilder();
 		long startTime = System.currentTimeMillis();
-		
+
 		try {
 			for(int i = startVerseNumber; i <= endVerseNumber; i++)
 				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i-1).getText() + "\n");
 		} catch (Exception e) {
 			sb.append("Book/verse/chapter does not exist.");
 		}
-		
+
 		long endTime = System.currentTimeMillis();
 		System.out.println(sb);
 		System.out.println("Time taken: " + (endTime - startTime) + " ms");
 	}
-	
+
 	/**
 	 * Searches through the books, and returns the verse which the word is found in
 	 */
@@ -278,61 +291,61 @@ public class BibleApp {
 		System.out.println(sb);
 		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
 	}
-	
+
 	/**
 	 * Searches through books to find the verse which is needed
 	 */
 	public void lookupVerse(int bookId, int chapterNumber, int verseNumber) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		long startTime = System.currentTimeMillis();
-		
+
 		try {
 			Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber-1);
 			sb.append("Verse: " + answer.getText() + "\n");
 		} catch (Exception e) {
 			sb.append("Book/chapter/verse number is incorrect.\n");
 		}
-		
+
 		long endTime = System.currentTimeMillis();
-		
+
 		System.out.println(sb);
 		System.out.println("Time taken: " + (endTime - startTime) + " ms");
 	}
-	
+
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
 	 */
 	public void lookupChapter(int bookId, int chapterNumber) {
 		if(bookId >= 0 && chapterNumber > 0) {
 			StringBuilder sb = new StringBuilder();
-			
+
 			long startTime = System.currentTimeMillis();
-			
+
 			try {
 				Chapter chapterFound = parsedBooks.get(bookId).getChapter(chapterNumber);
 				List<Verse> v = chapterFound.getVerses();
-				
+
 				sb.append("Chapter " + chapterFound.getChapterNumber()+1 + "\n");				
 				if(chapterFound.getDescription() != null)
-						sb.append("Description: " + chapterFound.getDescription() + "\n");
-				
+					sb.append("Description: " + chapterFound.getDescription() + "\n");
+
 				for(Verse verse : v) {
 					sb.append(verse.getText() + "\n"); // print out each verse
 				}
 			} catch (Exception e) {
 				sb.append("Invalid chapter or book number");
 			}
-			
+
 			long endTime = System.currentTimeMillis();
-			
+
 			System.out.println(sb);
 			System.out.println("Time Taken: " + (endTime - startTime) + " ms");
 		} else {
 			System.out.println("Please enter a valid book ID and/or chapter number.\n");
 		}
 	}
-		
+
 
 	/**
 	 * Searches through books and finds occurrences of search terms.
@@ -341,14 +354,14 @@ public class BibleApp {
 	 */
 	public void search(String statementToSearch) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		long start = System.currentTimeMillis();
-		
+
 		List<WordAppearance> appearances = wordHistory.getAppearances(statementToSearch);
-		
+
 		if(appearances != null && appearances.size() != 0) {
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
-			
+
 			for(WordAppearance appearance : appearances) {
 				if(appearance.descriptionType() == DescriptionType.NONE) {
 					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
@@ -362,9 +375,9 @@ public class BibleApp {
 		} else {
 			sb.append("No search results found.\n");
 		}
-		
+
 		long end = System.currentTimeMillis();
-		
+
 		System.out.println("\n" + sb);
 		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + (end - start) + "ms");
 	}
@@ -381,21 +394,21 @@ public class BibleApp {
 	 */
 	private Verse parseLine(String line, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		String[] words = StringUtils.splitWords(line);
-		
+
 		if(descriptionType == DescriptionType.NONE)
 			words[0] = null; // first word is number if not a description, so ignore it
-		
+
 		for(String word : words) {
 			if(word != null)
 				logAppearance(word, bookName, verseNumber, chapterNumber, descriptionType);
 		}
-		
+
 		if(descriptionType == DescriptionType.NONE)
 			return new Verse(verseNumber, chapterNumber, line);
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Logs an appearance of a single word, given:
 	 * @param word word to log
