@@ -3,7 +3,6 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,14 +26,11 @@ public class BibleApp {
 	 * Constructs a new BibleApp. No content currently.
 	 */
 	public BibleApp() {
-		URL dataPath = this.getClass().getResource("../data/");
-		File dataFolder = null;
 		File[] bookNames = null;
 		
-		if(dataPath != null) {
-			dataFolder = new File(dataPath.getFile()); // retrieves a list of all files within the data folder (source files);
-			bookNames = dataFolder.listFiles(); // retrieves a list of all files within the data folder (source files)
-		}
+		try {
+			bookNames = new File(this.getClass().getResource("../data/").getFile()).listFiles();
+		} catch (Exception e) { } // don't need to handle this -> error printed out and program terminated later
 		
 		long startTime = System.currentTimeMillis();
 
