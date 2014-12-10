@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -57,8 +58,7 @@ public class BibleApp {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) {
-		BibleApp bible = new BibleApp();
-		bible.displayMenuSystem();
+		new BibleApp().displayMenuSystem();
 	}
 
 	/**
@@ -184,6 +184,7 @@ public class BibleApp {
 	 */
 	public String getVerseRangeInformation(Scanner sc){
 		System.out.println("Please enter the range of verses you would like (EG: 1-5):");
+		
 		return sc.next();
 	}
 	/**
@@ -191,6 +192,7 @@ public class BibleApp {
 	 */
 	public String getWordInformation(Scanner sc) {
 		System.out.println("Please enter the word you are looking for: ");
+		
 		return sc.next();
 	}
 
@@ -199,7 +201,16 @@ public class BibleApp {
 	 */
 	public int getChapterInformation(Scanner sc) {
 		System.out.println("Please enter the chapter number: ");
-		return sc.nextInt();
+		
+		int chapter = -1;
+		
+		try {
+			chapter = sc.nextInt();
+		} catch (InputMismatchException e) {
+			chapter = -1;
+		}
+		
+		return chapter;
 	}
 
 	/**
@@ -207,7 +218,16 @@ public class BibleApp {
 	 */
 	public int getVerseInformation(Scanner sc) {
 		System.out.println("Please enter the verse number: ");
-		return sc.nextInt();
+		
+		int verse = -1;
+		
+		try {
+			verse = sc.nextInt();
+		} catch (InputMismatchException e) {
+			verse = -1;
+		}
+		
+		return verse;
 	}
 
 	/**
@@ -223,10 +243,16 @@ public class BibleApp {
 		System.out.println(sb);
 		System.out.println("Please choose a book number: ");
 
-		int menuItem = sc.nextInt() - 1; // take into account 0 based numbering
+		int menuItem = -1;
+		
+		try {
+			menuItem = sc.nextInt() - 1; // take into account 0 based numbering
 
-		if(menuItem < 0 || menuItem > parsedBooks.size())
+			if(menuItem < 0 || menuItem > parsedBooks.size())
+				menuItem = -1;
+		} catch (Exception e) {
 			menuItem = -1;
+		}
 
 		return menuItem; 
 	}
@@ -269,12 +295,13 @@ public class BibleApp {
 
 			for(WordAppearance appearance : searchWord) {
 				int bookId = 0;
+				
 				for(int appearanceId = 0; appearanceId < parsedBooks.size(); appearanceId++){
 					if(parsedBooks.get(appearanceId).getTitle().equals(appearance.getBook())){
 						bookId = appearanceId;
 					}
 				}
-				sb.append("Book Raw Name: " +  parsedBooks.get(bookId).getFileName() + "\n");
+				
 				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]: "
 						+ parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n");
 			} 
@@ -282,8 +309,8 @@ public class BibleApp {
 			sb.append("Word not found!");
 		}
 
-
 		long endtime = System.currentTimeMillis();
+		
 		System.out.println(sb);
 		System.out.println("Time Taken: " + ( endtime - starttime ) + " milliseconds");
 	}

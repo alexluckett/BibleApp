@@ -1,6 +1,5 @@
 package main;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +24,14 @@ public class Book {
 		
 	public void addChapter(Chapter chapter) {
 		if(chapter == null)
-			throw new InvalidParameterException("Chapter number cannot be null.");
+			throw new IllegalArgumentException("Chapter number cannot be null.");
 		
 		chapters.add(chapter);
 	}
 	
 	public Chapter getChapter(int chapterNumber) {
 		if(chapterNumber > chapters.size())
-			throw new InvalidParameterException("Chapter number is invalid (too big/small).");
+			throw new IllegalArgumentException("Chapter number is invalid (too big/small).");
 		
 		return chapters.get(chapterNumber-1);
 	}
@@ -48,15 +47,5 @@ public class Book {
 	public String getDescription() {
 		return description;
 	}
-	
-//	public LinkedHashSet<Integer> getChapters() {
-//		LinkedHashSet<Integer> chapterNumbers = new LinkedHashSet<Integer>();
-//		
-//		for(Verse verse : verses) {
-//			chapterNumbers.add((verse.getChapterNumber()));
-//		}
-//		
-//		return chapterNumbers;
-//	}
 	
 }
