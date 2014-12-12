@@ -3,7 +3,7 @@ package main;
 /**
  * Represents an appearance of a search term.
  * 
- * @author Alex Luckett <lucketta@aston.ac.uk>
+ * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class WordAppearance {
 	private final String book;

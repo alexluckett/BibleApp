@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static main.Constants.*;
 
 import main.WordAppearance.DescriptionType;
 
@@ -15,9 +16,15 @@ import main.WordAppearance.DescriptionType;
  * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class WordMap {
-	private Map<String, List<WordAppearance>> words = new HashMap<String, List<WordAppearance>>(12800, 1);
-	// hashmap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
-	// 1 in constructor is the load factor to determine when to double in size - as it's 1, it means it won't double until 12800
+	/**
+	 * Hashmap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
+	 * 1 in constructor is the load factor to determine when to double in size - as it's 1, it means it won't double until 12800.
+	 */
+	private Map<String, List<WordAppearance>> words;
+	
+	public WordMap() {
+		words = new HashMap<String, List<WordAppearance>>(TOTAL_WORDS, TOTAL_WORDS_LOADFACTOR);
+	}
 	
 	/**
 	 * Adds a word into the WordMap. Logs an appearance of a word within a book, chapter and verse. Can be used to quickly
@@ -38,6 +45,7 @@ public class WordMap {
 		List<WordAppearance> appearances = getAppearances(word); // search is not case sensitive
 		
 		if(appearances == null) { // no appearances have been logged
+			
 			/* Don't initialise with an initial value! This decreases performance since
 			 *  the actual word count could range anywhere between 0-9000 (estimate) */
 			appearances = new ArrayList<WordAppearance>();

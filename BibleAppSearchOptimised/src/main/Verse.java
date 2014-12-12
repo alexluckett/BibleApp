@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * Represents a verse object within a chapter.
+ * 
+ * @author Alexander Luckett <lucketta@aston.ac.uk>
+ */
 public class Verse {
 	private final int chapterNumber;
 	private final int verseNumber;

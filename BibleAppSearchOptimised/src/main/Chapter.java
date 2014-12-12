@@ -2,7 +2,13 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import static main.Constants.*;
 
+/**
+ * Represents a chapter object within a book
+ * 
+ * @author Alexander Luckett <lucketta@aston.ac.uk>
+ */
 public class Chapter {
 	private final int chapterNumber;
 	private String description;
@@ -10,7 +16,7 @@ public class Chapter {
 	
 	public Chapter(int chapterNumber) {
 		this.chapterNumber = chapterNumber;
-		this.verses = new ArrayList<Verse>(50);
+		this.verses = new ArrayList<Verse>(VERSES_INITIAL_AMOUNT);
 	}
 	
 	public int getChapterNumber() {

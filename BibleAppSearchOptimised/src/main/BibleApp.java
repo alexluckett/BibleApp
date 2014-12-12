@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import static main.Constants.*;
 
 import main.WordAppearance.DescriptionType;
 
@@ -20,8 +21,8 @@ import main.WordAppearance.DescriptionType;
  *
  */
 public class BibleApp {
-	private List<Book> parsedBooks = new ArrayList<Book>(66); // list of all fully parsed books
-	private WordMap wordHistory = new WordMap();
+	private List<Book> parsedBooks = new ArrayList<Book>(MAX_BOOKS); // list of all fully parsed books
+	private WordMap wordIndex = new WordMap();
 
 	/**
 	 * Constructs a new BibleApp. No content currently.
@@ -43,7 +44,7 @@ public class BibleApp {
 			long endTime = System.currentTimeMillis();
 
 			System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
-			System.out.println("Total unique words (case insensitive): " + wordHistory.size());
+			System.out.println("Total unique words (case insensitive): " + wordIndex.size());
 		} else {
 			System.err.println("\"data\" subdirectory is empty or does not exist. Please create directory with text files within.\n");
 		}
@@ -288,7 +289,7 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder(); 
 		long starttime = System.currentTimeMillis();
 
-		List<WordAppearance> searchWord = wordHistory.getAppearances(statementToSearch); 
+		List<WordAppearance> searchWord = wordIndex.getAppearances(statementToSearch);  // list of appearances for this search term
 
 		if(searchWord != null){
 			sb.append(statementToSearch + " found!" +  "\n");
@@ -296,7 +297,7 @@ public class BibleApp {
 			for(WordAppearance appearance : searchWord) {
 				int bookId = 0;
 				
-				for(int appearanceId = 0; appearanceId < parsedBooks.size(); appearanceId++){
+				for(int appearanceId = 0; appearanceId < parsedBooks.size(); appearanceId++){ // get book Id from the search term
 					if(parsedBooks.get(appearanceId).getTitle().equals(appearance.getBook())){
 						bookId = appearanceId;
 					}
@@ -380,7 +381,7 @@ public class BibleApp {
 
 		long start = System.currentTimeMillis();
 
-		List<WordAppearance> appearances = wordHistory.getAppearances(statementToSearch);
+		List<WordAppearance> appearances = wordIndex.getAppearances(statementToSearch);
 
 		if(appearances != null && appearances.size() != 0) {
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
@@ -441,6 +442,6 @@ public class BibleApp {
 	 * @param descriptionType description enum (BOOK/CHAPTER/NONE/ETC.)
 	 */
 	private void logAppearance(String word, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
-		wordHistory.addWord(word, bookName, verseNumber, chapterNumber, descriptionType);
+		wordIndex.addWord(word, bookName, verseNumber, chapterNumber, descriptionType);
 	}
 }

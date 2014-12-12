@@ -2,12 +2,18 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import static main.Constants.*;
 
+/**
+ * Represents a book object within the bible. 
+ * 
+ * @author Alex Luckett <lucketta@aston.ac.uk>
+ */
 public class Book {
 	private final String title;
 	private final String fileName;
 	private String description;
-	private List<Chapter> chapters = new ArrayList<Chapter>(10); // need to keep order
+	private List<Chapter> chapters = new ArrayList<Chapter>(CHAPTERS_INITIAL_AMOUNT); // need to keep order
 	
 	public Book(String fileName, String title) {
 		this.title = title;
