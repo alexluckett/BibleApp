@@ -262,10 +262,26 @@ public class BibleApp {
 	 * Get verses from a range of verse numbers
 	 */
 	public void rangeOfVerses(int bookId, int chapterNumber, String verses) {
-		String start = verses.substring(0,1);
-		String end = verses.substring(2,3);
-		int startVerseNumber = Integer.parseInt(start);
-		int endVerseNumber = Integer.parseInt(end);
+		boolean midFound = false;
+		String startingNumber = "";
+		String endingNumber = "";
+		
+		for(int i = 0; i < verses.length(); i++){
+			if(verses.substring(i, i+1).equalsIgnoreCase("-")){
+				midFound = true;
+			}
+			
+			if(midFound == false){
+				startingNumber += verses.substring(i, i+1);
+			}
+		
+			if(midFound == true && !(verses.substring(i, i+1).equalsIgnoreCase("-"))){
+				endingNumber += verses.substring(i, i+1);
+			}
+		}
+
+		int startVerseNumber = Integer.parseInt(startingNumber);
+		int endVerseNumber = Integer.parseInt(endingNumber);
 
 		StringBuilder sb = new StringBuilder();
 		long startTime = System.currentTimeMillis();
