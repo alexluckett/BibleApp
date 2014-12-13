@@ -279,11 +279,24 @@ public class BibleApp {
 				endingNumber += verses.substring(i, i+1);
 			}
 		}
-
-		int startVerseNumber = Integer.parseInt(startingNumber);
-		int endVerseNumber = Integer.parseInt(endingNumber);
-
+		
 		StringBuilder sb = new StringBuilder();
+		int startVerseNumber = 0;
+		int endVerseNumber = 0;
+		try{
+			startVerseNumber = Integer.parseInt(startingNumber);
+			endVerseNumber = Integer.parseInt(endingNumber);
+		} catch(NumberFormatException e){
+			sb.append("Invalid range of verses\n");
+		}
+		
+		if(startVerseNumber > endVerseNumber){
+			sb.append("First verse number was higher than the last! - Swapping numbers around!\n\n");
+			int temp = startVerseNumber;
+			startVerseNumber = endVerseNumber;
+			endVerseNumber = temp;			
+		}
+		
 		long startTime = System.currentTimeMillis();
 
 		try {
