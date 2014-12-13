@@ -13,11 +13,12 @@ public class Book {
 	private final String title;
 	private final String fileName;
 	private String description;
-	private List<Chapter> chapters = new ArrayList<Chapter>(CHAPTERS_INITIAL_AMOUNT); // need to keep order
+	private List<Chapter> chapters; // need to keep ordering
 	
 	public Book(String fileName, String title) {
 		this.title = title;
 		this.fileName = fileName;
+		chapters = new ArrayList<Chapter>(CHAPTERS_INITIAL_AMOUNT);
 	}
 	
 	public String getTitle() {

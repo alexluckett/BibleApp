@@ -19,25 +19,22 @@ import main.WordAppearance.DescriptionType;
  * @author Alexander Luckett  <lucketta@aston.ac.uk>
  * @author Ashley Bridgwood   <bridgwa1@aston.ac.uk>
  * @author Charandeep Rai     <raics@aston.ac.uk>
- *
  */
 public class BibleApp {
 	private List<Book> parsedBooks; // list of all fully parsed books
 	private WordMap wordIndex;
 
 	/**
-	 * Runs a new instance of the bible app. Will (READ: not yet) take in search terms
-	 * or "book chapter:verse" content locator.
+	 * Runs a new instance of the BibleApp.
 	 *  
 	 * @param args program arguments
-	 * @throws Exception 
 	 */
 	public static void main(String[] args) {
 		new BibleApp().displayMenuSystem();
 	}
 
 	/**
-	 * Constructs a new BibleApp. No content currently.
+	 * Constructs a new BibleApp.
 	 */
 	public BibleApp() {
 		parsedBooks = new ArrayList<Book>(MAX_BOOKS);
@@ -70,7 +67,7 @@ public class BibleApp {
 	 * Reads in all books contained within the file array.
 	 * 
 	 * @param File[] book files
-	 * @return 
+	 * @return boolean true if successful, false if not
 	 */
 	private boolean readInBooks(File[] books) {
 		if(books != null && books.length > 0) {
@@ -133,6 +130,7 @@ public class BibleApp {
 
 		book.addChapter(chapter); // add last book of last chapter manually -> can't auto detect because no new line that starts with "CHAPTER/PSALM"
 		parsedBooks.add(book);
+		
 		reader.close();
 	}
 
