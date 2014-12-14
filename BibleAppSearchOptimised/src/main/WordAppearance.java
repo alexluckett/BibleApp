@@ -51,15 +51,20 @@ public class WordAppearance {
 	public boolean equals(Object obj) {
 		WordAppearance comparison;
 		
-		if(!(obj instanceof WordAppearance)) { // can't be equal if they're not the same type!
-			return false;
-		} else {
+		if(obj instanceof WordAppearance) {
 			comparison = (WordAppearance) obj;
+		} else {
+			return false; // can't be equal if they're not the same type!
 		}
 		
 		return hashCode() == comparison.hashCode();
 	}
 	
+	/**
+	 * Represents the type of description to log. 
+	 *  
+	 * @author Alexander Luckett <lucketta@aston.ac.uk>
+	 */
 	public enum DescriptionType {
 		NONE, BOOK, CHAPTER
 	}

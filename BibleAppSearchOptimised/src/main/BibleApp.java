@@ -51,7 +51,9 @@ public class BibleApp {
 
 			if(success) {
 				System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
-				System.out.println("Total unique words (case insensitive): " + wordIndex.size());
+				System.out.println("Total unique words (case insensitive): " + wordIndex.uniqueWords());
+				System.out.println("Total words (see exclusions): " + wordIndex.totalWords());
+				System.out.println("\nWord count exclusions: \"Chapter X\", \"PSALM X\", verse numbers at the start of each line");
 			} else {
 				System.out.println(errorMessage);
 				System.exit(0);
@@ -518,6 +520,8 @@ public class BibleApp {
 	}
 	
 	private String getTimerText(long startTime, long endTime) {
-		return ((endTime-startTime) == 0) ? "<0 milliseconds" : (endTime-startTime) + " milliseconds"; // if 0ms, print <0, else the actual ms
+		long totalTime = endTime - startTime;
+		
+		return (totalTime == 0) ? "<0 milliseconds" : totalTime + " milliseconds"; // if 0ms, print <0, else the actual ms
 	}
 }

@@ -9,7 +9,6 @@ import org.junit.Test;
  * Test class for String Utils.
  * 
  * @author Alexander Luckett <lucketta@aston.ac.uk>
- *
  */
 public class TestStringUtils {
 	

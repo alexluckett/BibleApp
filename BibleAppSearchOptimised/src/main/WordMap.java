@@ -72,7 +72,20 @@ public class WordMap {
 	 * 
 	 * @return int size of WordMap
 	 */
-	public int size() {
+	public int uniqueWords() {
 		return words.size();
+	}
+	
+	/**
+	 * Returns the total number of words within the entire WordMap.
+	 * @return
+	 */
+	public int totalWords() {
+		int wordCount = 0;
+		
+		for(Map.Entry<String, List<WordAppearance>> currentEntry : words.entrySet())
+			wordCount += currentEntry.getValue().size();
+		
+		return wordCount;
 	}
 }
