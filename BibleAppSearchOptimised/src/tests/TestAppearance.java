@@ -6,6 +6,13 @@ import main.WordAppearance.DescriptionType;
 
 import org.junit.Test;
 
+/**
+ * Test class for Apperances.
+ * 
+ * @author Ashley Bridgwood <bridgwa1@aston.ac.uk>
+ *
+ */
+
 public class TestAppearance {
 	
 	@Test
