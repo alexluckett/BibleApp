@@ -147,10 +147,10 @@ public class BibleApp {
 			{
 				menu.append("================================\n");
 				menu.append("| 1. Search for a word         |\n");
-				menu.append("| 2. Lookup Chapter            |\n");
+				menu.append("| 2. Lookup chapter            |\n");
 				menu.append("| 3. Lookup verse              |\n");
-				menu.append("| 4. Find verse by word        |\n");
-				menu.append("| 5. Find range of verses      |\n");
+				menu.append("| 4. Print verses by word      |\n");
+				menu.append("| 5. Print range of verses     |\n");
 				menu.append("| 0. Exit                      |\n");
 				menu.append("================================\n");
 				menu.append("Please enter the activity number you wish to use: ");
@@ -318,17 +318,23 @@ public class BibleApp {
 		}
 
 		long startTime = System.currentTimeMillis();
+		long endSearch = startTime;
 
 		try {
 			for(int i = startVerseNumber; i <= endVerseNumber; i++)
 				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i-1).getText() + "\n");
+			
+			endSearch = System.currentTimeMillis();
 		} catch (Exception e) {
 			sb.append("Book/verse/chapter does not exist.");
 		}
-
-		long endTime = System.currentTimeMillis();
+		
 		System.out.println(sb);
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + (endTime - startTime) + " ms");
+		
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
+		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
 	}
 
 	/**
@@ -339,6 +345,8 @@ public class BibleApp {
 		long starttime = System.currentTimeMillis();
 
 		List<WordAppearance> searchWord = wordIndex.getAppearances(statementToSearch);  // list of appearances for this search term
+		
+		long endSearch = System.currentTimeMillis();
 
 		if(searchWord != null){
 			sb.append(statementToSearch + " found!" +  "\n");
@@ -359,10 +367,12 @@ public class BibleApp {
 			sb.append("Word not found!");
 		}
 
-		long endtime = System.currentTimeMillis();
-
 		System.out.println(sb);
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + ( endtime - starttime ) + " milliseconds");
+		
+		long endtime = System.currentTimeMillis();
+		
+		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(starttime, endSearch));
+		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(starttime, endtime));
 	}
 
 	/**
@@ -380,10 +390,14 @@ public class BibleApp {
 			sb.append("Book/chapter/verse number is incorrect.\n");
 		}
 
-		long endTime = System.currentTimeMillis();
+		long endSearch = System.currentTimeMillis();
 
 		System.out.println(sb);
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + (endTime - startTime) + " ms");
+		
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
+		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
 	}
 
 	/**
@@ -394,10 +408,13 @@ public class BibleApp {
 			StringBuilder sb = new StringBuilder();
 
 			long startTime = System.currentTimeMillis();
+			long endSearch = startTime;
 
 			try {
 				Chapter chapterFound = parsedBooks.get(bookId).getChapter(chapterNumber);
 				List<Verse> v = chapterFound.getVerses();
+				
+				endSearch = System.currentTimeMillis();
 
 				sb.append("Chapter " + chapterFound.getChapterNumber()+1 + "\n");				
 				if(chapterFound.getDescription() != null)
@@ -409,11 +426,13 @@ public class BibleApp {
 			} catch (Exception e) {
 				sb.append("Invalid chapter or book number");
 			}
-
-			long endTime = System.currentTimeMillis();
-
+			
 			System.out.println(sb);
-			System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + (endTime - startTime) + " ms");
+			
+			long endTime = System.currentTimeMillis();
+			
+			System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
+			System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
 		} else {
 			System.out.println("Please enter a valid book ID and/or chapter number.\n");
 		}
@@ -428,9 +447,11 @@ public class BibleApp {
 	public void search(String statementToSearch) {
 		StringBuilder sb = new StringBuilder();
 
-		long start = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 
 		List<WordAppearance> appearances = wordIndex.getAppearances(statementToSearch);
+		
+		long endSearch = System.currentTimeMillis();
 
 		if(appearances != null && appearances.size() != 0) {
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
@@ -448,11 +469,13 @@ public class BibleApp {
 		} else {
 			sb.append("No search results found.\n");
 		}
-
-		long end = System.currentTimeMillis();
-
+		
 		System.out.println("\n" + sb);
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + (end - start) + "ms");
+
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
+		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
 	}
 
 	/**
@@ -492,5 +515,9 @@ public class BibleApp {
 	 */
 	private void logAppearance(String word, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		wordIndex.addWord(word, bookName, verseNumber, chapterNumber, descriptionType);
+	}
+	
+	private String getTimerText(long startTime, long endTime) {
+		return ((endTime-startTime) == 0) ? "<0 milliseconds" : (endTime-startTime) + " milliseconds"; // if 0ms, print <0, else the actual ms
 	}
 }
