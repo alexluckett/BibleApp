@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static main.Constants.*;
 
 import main.WordAppearance.DescriptionType;
 
@@ -17,13 +16,16 @@ import main.WordAppearance.DescriptionType;
  */
 public class WordMap {
 	/**
-	 * Hashmap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
+	 * HashMap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
 	 * 1 in constructor is the load factor to determine when to double in size - as it's 1, it means it won't double until 12800.
+	 * 
+	 * Using a List implementation to hold the appearances because we need to keep ordering. Most appropriate collection, since
+	 * a word can appear multiple times within a verse - therefore a Set would be inappropriate.
 	 */
 	private Map<String, List<WordAppearance>> words;
 	
-	public WordMap() {
-		words = new HashMap<String, List<WordAppearance>>(TOTAL_WORDS, TOTAL_WORDS_LOADFACTOR);
+	public WordMap(int maxWordsEstimate, int loadFactor) {
+		words = new HashMap<String, List<WordAppearance>>(maxWordsEstimate, loadFactor);
 	}
 	
 	/**
@@ -46,7 +48,7 @@ public class WordMap {
 		
 		if(appearances == null) { // no appearances have been logged
 			
-			/* Don't initialise with an initial value! This decreases performance since
+			/* Don't initialise ArrayList with an initial value! This decreases performance since
 			 *  the actual word count could range anywhere between 0-9000 (estimate) */
 			appearances = new ArrayList<WordAppearance>();
 			words.put(word, appearances);
@@ -68,7 +70,7 @@ public class WordMap {
 	/**
 	 * Returns the amount of unique words (case insensitive) held within the WordMap.
 	 * 
-	 * @return int size of wordmap
+	 * @return int size of WordMap
 	 */
 	public int size() {
 		return words.size();

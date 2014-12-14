@@ -7,7 +7,7 @@ import static main.Constants.*;
 /**
  * Represents a book object within the bible. 
  * 
- * @author Alex Luckett <lucketta@aston.ac.uk>
+ * @author Alexander Luckett <lucketta@aston.ac.uk>
  */
 public class Book {
 	private final String title;

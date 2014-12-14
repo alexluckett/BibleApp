@@ -38,7 +38,7 @@ public class BibleApp {
 	 */
 	public BibleApp() {
 		parsedBooks = new ArrayList<Book>(MAX_BOOKS);
-		wordIndex = new WordMap();
+		wordIndex = new WordMap(TOTAL_WORDS, TOTAL_WORDS_LOADFACTOR);
 		
 		String errorMessage = "Failed to read in files. /data directory is empty or does not exist.";
 		
@@ -329,7 +329,7 @@ public class BibleApp {
 			sb.append("Book/verse/chapter does not exist.");
 		}
 		
-		System.out.println(sb);
+		System.out.println("\n" + sb);
 		
 		long endTime = System.currentTimeMillis();
 		
@@ -367,7 +367,7 @@ public class BibleApp {
 			sb.append("Word not found!");
 		}
 
-		System.out.println(sb);
+		System.out.println("\n" + sb);
 		
 		long endtime = System.currentTimeMillis();
 		
@@ -392,7 +392,7 @@ public class BibleApp {
 
 		long endSearch = System.currentTimeMillis();
 
-		System.out.println(sb);
+		System.out.println("\n" + sb);
 		
 		long endTime = System.currentTimeMillis();
 		
@@ -427,7 +427,7 @@ public class BibleApp {
 				sb.append("Invalid chapter or book number");
 			}
 			
-			System.out.println(sb);
+			System.out.println("\n" + sb);
 			
 			long endTime = System.currentTimeMillis();
 			
@@ -458,11 +458,11 @@ public class BibleApp {
 
 			for(WordAppearance appearance : appearances) {
 				if(appearance.descriptionType() == DescriptionType.NONE) {
-					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // repeated system outs are incredibly slow. this gives much better performance.
+					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // inform user what book, chapter and verse the appearance is within
 				} else if(appearance.descriptionType() == DescriptionType.CHAPTER) {
-					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ": CHAPTER/PSALM DESCRIPTION]\n");
+					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ": CHAPTER/PSALM DESCRIPTION]\n"); // indicate to user search term is within chapter/psalm description
 				} else {
-					sb.append(appearance.getBook() + ": BOOK DESCRIPTION\n"); // print this again - search results may be truncated if too long
+					sb.append(appearance.getBook() + ": BOOK DESCRIPTION\n"); // indicate to user search term is within book description
 				}
 			}
 			sb.append("Occurances: " + appearances.size() + "\n");

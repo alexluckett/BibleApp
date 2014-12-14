@@ -15,7 +15,7 @@ public class TestWordMap {
 
 	@Test
 	public void testAdding(){
-		WordMap w = new WordMap();
+		WordMap w = new WordMap(10, 1);
 		w.addWord("Lord", "Harry Potter", 1, 2, DescriptionType.NONE);
 		w.addWord("Water", "Harry Potter", 1, 2, DescriptionType.NONE);
 		w.addWord("Water", "Harry Potter", 2, 2, DescriptionType.NONE);
@@ -31,6 +31,7 @@ public class TestWordMap {
 		}
 		
 		List<WordAppearance> words = w.getAppearances("Lord");
-			assertEquals(2, words.size());
+		
+		assertEquals(2, words.size());
 	}
 }
