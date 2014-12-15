@@ -43,7 +43,7 @@ public class BibleApp {
 		String errorMessage = "Failed to read in files. /data directory is empty or does not exist.";
 		
 		try {
-			File[] bookNames = new File(this.getClass().getResource("../data/").getFile()).listFiles();
+			File[] bookNames = new File("data/").listFiles();
 
 			long startTime = System.currentTimeMillis();
 			boolean success = readInBooks(bookNames);
