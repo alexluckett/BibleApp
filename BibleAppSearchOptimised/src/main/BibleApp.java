@@ -285,7 +285,9 @@ public class BibleApp {
 		boolean midFound = false;
 		String startingNumber = "";
 		String endingNumber = "";
-
+		
+		//Cycles through the verses string, checking where the '-' is, then sorts the first number and last number
+		//based on where the '-' is
 		for(int i = 0; i < verses.length(); i++){
 			if(verses.substring(i, i+1).equalsIgnoreCase("-")){
 				midFound = true;
@@ -322,6 +324,7 @@ public class BibleApp {
 
 		try {
 			for(int i = startVerseNumber; i <= endVerseNumber; i++)
+				//Get the actual verse from the data entered
 				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i-1).getText() + "\n");
 			
 			endSearch = System.currentTimeMillis();
