@@ -504,7 +504,7 @@ public class BibleApp {
 		}
 
 		if(descriptionType == DescriptionType.NONE)
-			return new Verse(verseNumber, chapterNumber, line);
+			return new Verse(verseNumber, line);
 
 		return null; // no need to return a verse if we're parsing a description
 	}
