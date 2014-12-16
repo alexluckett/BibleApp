@@ -52,8 +52,6 @@ public class BibleApp {
 			if(success) {
 				System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
 				System.out.println("Total unique words (case insensitive): " + wordIndex.uniqueWords());
-				System.out.println("Total words (see exclusions): " + wordIndex.totalWords());
-				System.out.println("\nWord count exclusions: \"Chapter X\", \"PSALM X\", verse numbers at the start of each line");
 			} else {
 				System.out.println(errorMessage);
 				System.exit(0);
@@ -72,15 +70,15 @@ public class BibleApp {
 	 * @return boolean true if successful, false if not
 	 */
 	private boolean readInBooks(File[] books) {
-		if(books != null && books.length > 0) {
+		if(books != null && books.length > 0) { // check we have some books before reading in
 			try {
 				for(int j = 0; j < books.length; j++) {
-					readInFile(books[j].getAbsolutePath());
+					readInFile(books[j].getAbsolutePath()); // get the bath of the book, then inform readInFile(...) to read it in
 				}
 				
 				return true;
 			} catch (IOException e) {
-				return false;
+				return false; // fail
 			}
 		}
 
@@ -112,7 +110,7 @@ public class BibleApp {
 
 			if(currentLine.startsWith("CHAPTER") || currentLine.startsWith("PSALM")) {
 				if(chapterNumber != 0)
-					book.addChapter(chapter);
+					book.addChapter(chapter); // chapter not constructed until chapterNumber >0, so submit it to the book
 
 				chapter = new Chapter(chapterNumber++);
 				verseNumber = 1; // new chapter, must reset verse count to 1
@@ -363,7 +361,7 @@ public class BibleApp {
 				}
 
 				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]: "
-						+ parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n");
+						+ parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n"); // log the appearance in the StringBuilder 
 			} 
 		} else {
 			sb.append("Word not found!");
@@ -387,14 +385,14 @@ public class BibleApp {
 
 		try {
 			Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber-1);
-			sb.append("Verse: " + answer.getText() + "\n");
+			sb.append("Verse: " + answer.getText() + "\n"); // pull in verse from parameters in method
 		} catch (Exception e) {
 			sb.append("Book/chapter/verse number is incorrect.\n");
 		}
 
 		long endSearch = System.currentTimeMillis();
 
-		System.out.println("\n" + sb);
+		System.out.println("\n" + sb); // print out results
 		
 		long endTime = System.currentTimeMillis();
 		
