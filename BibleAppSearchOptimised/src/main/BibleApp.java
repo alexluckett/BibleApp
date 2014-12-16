@@ -22,7 +22,7 @@ import main.WordAppearance.DescriptionType;
  */
 public class BibleApp {
 	private List<Book> parsedBooks; // list of all fully parsed books
-	private WordMap wordIndex;
+	private WordMap wordIndex; // index of all words within the bible
 
 	/**
 	 * Runs a new instance of the BibleApp.
@@ -43,7 +43,7 @@ public class BibleApp {
 		String errorMessage = "Failed to read in files. /data directory is empty or does not exist.";
 		
 		try {
-			File[] bookNames = new File("data/").listFiles();
+			File[] bookNames = new File("data/").listFiles(); // list in the files in the "data" directory in the root path of project
 
 			long startTime = System.currentTimeMillis();
 			boolean success = readInBooks(bookNames);
@@ -129,7 +129,7 @@ public class BibleApp {
 		}
 
 		book.addChapter(chapter); // add last book of last chapter manually -> can't auto detect because no new line that starts with "CHAPTER/PSALM"
-		parsedBooks.add(book);
+		parsedBooks.add(book); // finished processing book, add to collection
 		
 		reader.close();
 	}
@@ -312,7 +312,7 @@ public class BibleApp {
 			sb.append("Invalid range of verses\n");
 		}
 
-		if(startVerseNumber > endVerseNumber){
+		if(startVerseNumber > endVerseNumber) { // validation to make sure a valid range is entered
 			sb.append("First verse number was higher than the last! - Swapping numbers around!\n\n");
 			int temp = startVerseNumber;
 			startVerseNumber = endVerseNumber;
@@ -420,7 +420,7 @@ public class BibleApp {
 				endSearch = System.currentTimeMillis();
 
 				sb.append("Chapter " + chapterFound.getChapterNumber()+1 + "\n");				
-				if(chapterFound.getDescription() != null)
+				if(chapterFound.getDescription() != null) // if there is a description, add this to the chapter printout
 					sb.append("Description: " + chapterFound.getDescription() + "\n");
 
 				for(Verse verse : v) {
@@ -499,13 +499,13 @@ public class BibleApp {
 
 		for(String word : words) {
 			if(word != null)
-				logAppearance(word, bookName, verseNumber, chapterNumber, descriptionType);
+				logAppearance(word, bookName, verseNumber, chapterNumber, descriptionType); // log each word in the index
 		}
 
 		if(descriptionType == DescriptionType.NONE)
 			return new Verse(verseNumber, chapterNumber, line);
 
-		return null;
+		return null; // no need to return a verse if we're parsing a description
 	}
 
 	/**
