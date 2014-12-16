@@ -78,7 +78,10 @@ public class WordMap {
 	
 	/**
 	 * Returns the total number of words within the entire WordMap.
-	 * @return
+	 * 
+	 * WORD COUNT EXCLUDES CERTAIN THINGS, SUCH AS "Chapter X/PSALM X" AND VERSE NUMBERS, etc.
+	 * 
+	 * @return totalWords
 	 */
 	public int totalWords() {
 		int wordCount = 0;
