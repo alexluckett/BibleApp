@@ -16,6 +16,7 @@ import main.WordAppearance.DescriptionType;
  * Main class for bible app. Will include ability to load in bible,
  * search for text and go to certain chapters/verses via command line interface.
  * 
+ * The Three Wise Men - Group 8:
  * @author Alexander Luckett  <lucketta@aston.ac.uk>
  * @author Ashley Bridgwood   <bridgwa1@aston.ac.uk>
  * @author Charandeep Rai     <raics@aston.ac.uk>
