@@ -419,7 +419,7 @@ public class BibleApp {
 				
 				endSearch = System.currentTimeMillis();
 
-				sb.append("Chapter " + chapterFound.getChapterNumber()+1 + "\n");				
+				sb.append("Chapter " + (chapterFound.getChapterNumber()+1) + "\n");				
 				if(chapterFound.getDescription() != null) // if there is a description, add this to the chapter printout
 					sb.append("Description: " + chapterFound.getDescription() + "\n");
 
