@@ -42,9 +42,9 @@ public class WordMap {
 	 * @param descriptionType type of description word is part of (DescriptionType.NONE if not)
 	 */
 	public void addWord(String word, String book, int verse, int chapter, DescriptionType descriptionType) {		
-		word = word.toLowerCase();
-		
 		List<WordAppearance> appearances = getAppearances(word); // search is not case sensitive
+		
+		word = word.toLowerCase();
 		
 		if(appearances == null) { // no appearances have been logged
 			
