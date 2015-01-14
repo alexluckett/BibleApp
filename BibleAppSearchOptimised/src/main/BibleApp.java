@@ -32,6 +32,8 @@ public class BibleApp {
 
 	/**
 	 * Constructs a new BibleApp.
+	 * 
+	 * @author Alex
 	 */
 	public BibleApp() {		
 		String errorMessage = "Failed to read in files. /data directory is empty or does not exist.";
@@ -175,6 +177,8 @@ public class BibleApp {
 
 	/**
 	 * Display the book selection to the user 
+	 * 
+	 * @author Ash
 	 */
 	public int getBookIdFromUser(Scanner sc) {
 		StringBuilder sb = new StringBuilder();
@@ -202,6 +206,8 @@ public class BibleApp {
 
 	/**
 	 * Get verses from a range of verse numbers
+	 * 
+	 * @author Ash
 	 */
 	public void rangeOfVerses(int bookId, int chapterNumber, String verses) {
 		boolean midFound = false;
@@ -264,6 +270,8 @@ public class BibleApp {
 
 	/**
 	 * Searches through the books, and returns the verse which the word is found in
+	 * 
+	 * @author Ash
 	 */
 	public void verseByWord(String statementToSearch) {
 		StringBuilder sb = new StringBuilder(); 
@@ -302,6 +310,8 @@ public class BibleApp {
 
 	/**
 	 * Searches through books to find the verse which is needed
+	 * 
+	 * @author Ash
 	 */
 	public void lookupVerse(int bookId, int chapterNumber, int verseNumber) {
 		StringBuilder sb = new StringBuilder();
@@ -327,6 +337,8 @@ public class BibleApp {
 
 	/**
 	 * Searches through books to find the chapters which refer to the book and chapter number 
+	 * 
+	 * @author Chaz
 	 */
 	public void lookupChapter(int bookId, int chapterNumber) {
 		if(bookId >= 0 && chapterNumber > 0) {
@@ -368,6 +380,7 @@ public class BibleApp {
 	 * Searches through books and finds occurrences of search terms.
 	 * 
 	 * @param statementToSearch search term
+	 * @author Alex
 	 */
 	public void search(String statementToSearch) {
 		StringBuilder sb = new StringBuilder();
