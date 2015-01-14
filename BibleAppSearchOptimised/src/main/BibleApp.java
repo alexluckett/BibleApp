@@ -385,9 +385,7 @@ public class BibleApp {
 		StringBuilder sb = new StringBuilder();
 
 		long startTime = System.currentTimeMillis();
-
 		List<WordAppearance> appearances = wordIndex.getAppearances(statementToSearch);
-		
 		long endSearch = System.currentTimeMillis();
 
 		if(appearances != null && appearances.size() != 0) {
