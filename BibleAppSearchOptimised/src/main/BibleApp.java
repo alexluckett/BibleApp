@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import main.BibleReader.ParsedBible;
-import main.WordAppearance.DescriptionType;
 
 /**
  * Main class for bible app. Will include ability to load in bible,
@@ -394,15 +393,9 @@ public class BibleApp {
 		if(appearances != null && appearances.size() != 0) {
 			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
 
-			for(WordAppearance appearance : appearances) {
-				if(appearance.descriptionType() == DescriptionType.NONE) {
-					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "] \n"); // inform user what book, chapter and verse the appearance is within
-				} else if(appearance.descriptionType() == DescriptionType.CHAPTER) {
-					sb.append(appearance.getBook() + " [" + appearance.getChapter() + ": CHAPTER/PSALM DESCRIPTION]\n"); // indicate to user search term is within chapter/psalm description
-				} else {
-					sb.append(appearance.getBook() + ": BOOK DESCRIPTION\n"); // indicate to user search term is within book description
-				}
-			}
+			for(WordAppearance appearance : appearances)
+				sb.append(appearance);
+			
 			sb.append("Occurances: " + appearances.size() + "\n");
 		} else {
 			sb.append("No search results found.\n");

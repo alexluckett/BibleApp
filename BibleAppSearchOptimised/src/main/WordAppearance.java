@@ -60,6 +60,21 @@ public class WordAppearance {
 		return hashCode() == comparison.hashCode();
 	}
 	
+	@Override
+	public String toString() {
+		String toString;
+		
+		if(descriptionType() == DescriptionType.NONE) {
+			toString = getBook() + " [" + getChapter() + ":" + getVerse() + "] \n"; // inform user what book, chapter and verse the appearance is within
+		} else if(descriptionType() == DescriptionType.CHAPTER) {
+			toString = getBook() + " [" + getChapter() + ": CHAPTER/PSALM DESCRIPTION]\n"; // indicate to user search term is within chapter/psalm description
+		} else {
+			toString = getBook() + ": BOOK DESCRIPTION\n"; // indicate to user search term is within book description
+		}
+		
+		return toString;
+	}
+	
 	/**
 	 * Represents the type of description to log. 
 	 *  
