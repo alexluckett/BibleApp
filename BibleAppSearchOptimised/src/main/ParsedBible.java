@@ -2,6 +2,11 @@ package main;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Ashley Bridgwood   <bridgwa1@aston.ac.uk>
+ * @author Charandeep Rai     <raics@aston.ac.uk>
+ */
 public class ParsedBible {
 	private List<Book> bibleBooks;
 	private WordMap wordIndex;

@@ -12,7 +12,6 @@ import java.util.Scanner;
  * The Three Wise Men - Group 8:
  * @author Alexander Luckett  <lucketta@aston.ac.uk>
  * @author Ashley Bridgwood   <bridgwa1@aston.ac.uk>
- * @author Charandeep Rai     <raics@aston.ac.uk>
  */
 public class BibleApp {
 	private ParsedBible bible;
