@@ -16,11 +16,7 @@ import main.WordAppearance.DescriptionType;
  */
 public class WordMap {
 	/**
-	 * HashMap is O(1) retrieval time. 12798 total words - initialise with rounded value for better performance.
-	 * 1 in constructor is the load factor to determine when to double in size - as it's 1, it means it won't double until 12800.
-	 * 
-	 * Using a List implementation to hold the appearances because we need to keep ordering. Most appropriate collection, since
-	 * a word can appear multiple times within a verse - therefore a Set would be inappropriate.
+	 * Maps a word to a list of appearances within a bible.
 	 */
 	private Map<String, List<WordAppearance>> words;
 	
@@ -31,9 +27,6 @@ public class WordMap {
 	/**
 	 * Adds a word into the WordMap. Logs an appearance of a word within a book, chapter and verse. Can be used to quickly
 	 * find where a word appears within the bible.
-	 * 
-	 * Also takes in a DesscriptionType enum to represent if the current word is part of a description. If so, the enum will
-	 * specify which part or DescriptionType.NONE for no description.
 	 * 
 	 * @param word to log
 	 * @param book where word appears
