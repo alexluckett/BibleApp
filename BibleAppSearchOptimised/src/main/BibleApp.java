@@ -160,7 +160,7 @@ public class BibleApp {
 	 * 
 	 * @author Ash
 	 */
-	public int getBookIdFromUser(Scanner sc) throws InputMismatchException {
+	public int getBookIdFromUser(Scanner sc) {
 		StringBuilder sb = new StringBuilder();
 		
 		List<Book> bibleBooks = bible.getBibleBooks();
@@ -171,17 +171,5 @@ public class BibleApp {
 
 		return getNumberInput(sc, "Please choose a book number");
 	}
-
-	
-
-	
-
-	
-
-	
-
-
-	
-	
 	
 }
