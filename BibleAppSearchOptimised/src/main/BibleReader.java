@@ -11,6 +11,11 @@ import java.util.List;
 
 import main.WordAppearance.DescriptionType;
 
+/**
+ * 
+ * @author Alexander Luckett <lucketta@aston.ac.uk>
+ *
+ */
 public class BibleReader {
 	private List<Book> parsedBooks;
 	private WordMap wordIndex;
