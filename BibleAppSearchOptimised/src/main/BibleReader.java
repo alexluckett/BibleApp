@@ -120,24 +120,5 @@ public class BibleReader {
 	 */
 	private void logAppearance(String word, String bookName, int verseNumber, int chapterNumber, DescriptionType descriptionType) {
 		wordIndex.addWord(word, bookName, verseNumber, chapterNumber, descriptionType);
-	}
-	
-	public class ParsedBible {
-		private List<Book> bibleBooks;
-		private WordMap wordIndex;
-		
-		public ParsedBible(List<Book> bibleBooks, WordMap wordIndex) {
-			this.bibleBooks = bibleBooks;
-			this.wordIndex = wordIndex;
-		}
-		
-		public List<Book> getBibleBooks() {
-			return bibleBooks;
-		}
-		
-		public WordMap getWordIndex() {
-			return wordIndex;
-		}
-	}
-	
+	}	
 }

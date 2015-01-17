@@ -5,8 +5,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import main.BibleReader.ParsedBible;
-
 /**
  * Main class for bible app. Will include ability to load in bible,
  * search for text and go to certain chapters/verses via command line interface.
@@ -17,8 +15,7 @@ import main.BibleReader.ParsedBible;
  * @author Charandeep Rai     <raics@aston.ac.uk>
  */
 public class BibleApp {
-	private List<Book> parsedBooks; // list of all fully parsed books
-	private WordMap wordIndex; // index of all words within the bible
+	private ParsedBible bible;
 
 	/**
 	 * Runs a new instance of the BibleApp.
@@ -42,14 +39,11 @@ public class BibleApp {
 			BibleReader bibleReader = new BibleReader();
 			
 			long startTime = System.currentTimeMillis();
-			ParsedBible parsedBible = bibleReader.readInBooks(bookNames);
+			bible = bibleReader.readInBooks(bookNames);
 			long endTime = System.currentTimeMillis();
-
-			parsedBooks = parsedBible.getBibleBooks();
-			wordIndex = parsedBible.getWordIndex();
 				
 			System.out.println("Read in time: " + (endTime - startTime) + " milliseconds.");
-			System.out.println("Total unique words (case insensitive): " + wordIndex.uniqueWords());
+			System.out.println("Total unique words (case insensitive): " + bible.getWordIndex().uniqueWords());
 
 		} catch (Exception e) {
 			System.err.println(errorMessage);
@@ -96,23 +90,23 @@ public class BibleApp {
 
 				break;	
 			case 1:
-				search(getWordInformation(sc));
+				bible.printSearch(getWordInformation(sc));
 
 				break;
 			case 2:
-				lookupChapter(getBookIdFromUser(sc), getChapterInformation(sc));
+				bible.printChapterLookup(getBookIdFromUser(sc), getChapterInformation(sc));
 
 				break;
 			case 3:
-				lookupVerse(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc));
+				bible.printVerseLookup(getBookIdFromUser(sc), getChapterInformation(sc), getVerseInformation(sc));
 
 				break;
 			case 4:
-				verseByWord(getWordInformation(sc));
+				bible.printVerseByWord(getWordInformation(sc));
 
 				break;
 			case 5:
-				rangeOfVerses(getBookIdFromUser(sc), getChapterInformation(sc), getVerseRangeInformation(sc));
+				bible.printVerseRange(getBookIdFromUser(sc), getChapterInformation(sc), getVerseRangeInformation(sc));
 				break;
 
 			default:
@@ -122,56 +116,44 @@ public class BibleApp {
 		} while(!finished);
 
 	}
+	
+	private String getStringInput(Scanner sc, String question) {
+		System.out.println(question + ":");
+
+		return sc.next();
+	}
+	
+	private int getNumberInput(Scanner sc, String question) throws InputMismatchException {
+		System.out.println(question + ":");
+
+		return sc.nextInt();
+	}
 
 	/**
 	 * Get a range of verse from the user
 	 */
 	public String getVerseRangeInformation(Scanner sc){
-		System.out.println("Please enter the range of verses you would like (EG: 1-5):");
-
-		return sc.next();
+		return getStringInput(sc, "Please enter the range of verses you would like (EG: 1-5)");
 	}
 	/**
 	 * Get words from the user
 	 */
 	public String getWordInformation(Scanner sc) {
-		System.out.println("Please enter the word you are looking for: ");
-
-		return sc.next();
+		return getStringInput(sc, "Please enter the word you are looking for ");
 	}
 
 	/**
 	 * Get chapter number from the user
 	 */
 	public int getChapterInformation(Scanner sc) {
-		System.out.println("Please enter the chapter number: ");
-
-		int chapter = -1;
-
-		try {
-			chapter = sc.nextInt();
-		} catch (InputMismatchException e) {
-			chapter = -1;
-		}
-
-		return chapter;
+		return getNumberInput(sc, "Please enter the chapter number");
 	}
 
 	/**
 	 * Get verse number from the user
 	 */
 	public int getVerseInformation(Scanner sc) {
-		System.out.println("Please enter the verse number: ");
-
-		int verse = -1;
-
-		try {
-			verse = sc.nextInt();
-		} catch (InputMismatchException e) {
-			verse = -1;
-		}
-
-		return verse;
+		return getNumberInput(sc, "Please enter the verse number");
 	}
 
 	/**
@@ -179,237 +161,28 @@ public class BibleApp {
 	 * 
 	 * @author Ash
 	 */
-	public int getBookIdFromUser(Scanner sc) {
+	public int getBookIdFromUser(Scanner sc) throws InputMismatchException {
 		StringBuilder sb = new StringBuilder();
+		
+		List<Book> bibleBooks = bible.getBibleBooks();
 
-		for(int i = 0; i < parsedBooks.size(); i++){
-			sb.append((i+1) + ": " + parsedBooks.get(i).getTitle() + "\n"); // print out a list of book titles, numbered 1-n
+		for(int i = 0; i < bibleBooks.size(); i++){
+			sb.append((i+1) + ": " + bibleBooks.get(i).getTitle() + "\n"); // print out a list of book titles, numbered 1-n
 		}
 
-		System.out.println(sb);
-		System.out.println("Please choose a book number: ");
-
-		int menuItem = -1;
-
-		try {
-			menuItem = sc.nextInt() - 1; // take into account 0 based numbering
-
-			if(menuItem < 0 || menuItem > parsedBooks.size())
-				menuItem = -1;
-		} catch (Exception e) {
-			menuItem = -1;
-		}
-
-		return menuItem; 
+		return getNumberInput(sc, "Please choose a book number");
 	}
 
-	/**
-	 * Get verses from a range of verse numbers
-	 * 
-	 * @author Ash
-	 */
-	public void rangeOfVerses(int bookId, int chapterNumber, String verses) {
-		boolean midFound = false;
-		String startingNumber = "";
-		String endingNumber = "";
-		
-		//Cycles through the verses string, checking where the '-' is, then sorts the first number and last number
-		//based on where the '-' is
-		for(int i = 0; i < verses.length(); i++){
-			if(verses.substring(i, i+1).equalsIgnoreCase("-")){
-				midFound = true;
-			}
-
-			if(midFound == false){
-				startingNumber += verses.substring(i, i+1);
-			}
-
-			if(midFound == true && !(verses.substring(i, i+1).equalsIgnoreCase("-"))){
-				endingNumber += verses.substring(i, i+1);
-			}
-		}
-
-		StringBuilder sb = new StringBuilder();
-		int startVerseNumber = 0;
-		int endVerseNumber = 0;
-		try{
-			startVerseNumber = Integer.parseInt(startingNumber);
-			endVerseNumber = Integer.parseInt(endingNumber);
-		} catch(NumberFormatException e){
-			sb.append("Invalid range of verses\n");
-		}
-
-		if(startVerseNumber > endVerseNumber) { // validation to make sure a valid range is entered
-			sb.append("First verse number was higher than the last! - Swapping numbers around!\n\n");
-			int temp = startVerseNumber;
-			startVerseNumber = endVerseNumber;
-			endVerseNumber = temp;			
-		}
-
-		long startTime = System.currentTimeMillis();
-		long endSearch = startTime;
-
-		try {
-			for(int i = startVerseNumber; i <= endVerseNumber; i++)
-				//Get the actual verse from the data entered
-				sb.append(parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(i-1).getText() + "\n");
-			
-			endSearch = System.currentTimeMillis();
-		} catch (Exception e) {
-			sb.append("Book/verse/chapter does not exist.");
-		}
-		
-		System.out.println("\n" + sb);
-		
-		long endTime = System.currentTimeMillis();
-		
-		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
-	}
-
-	/**
-	 * Searches through the books, and returns the verse which the word is found in
-	 * 
-	 * @author Ash
-	 */
-	public void verseByWord(String statementToSearch) {
-		StringBuilder sb = new StringBuilder(); 
-		long starttime = System.currentTimeMillis();
-
-		List<WordAppearance> searchWord = wordIndex.getAppearances(statementToSearch);  // list of appearances for this search term
-		
-		long endSearch = System.currentTimeMillis();
-
-		if(searchWord != null){
-			sb.append(statementToSearch + " found!" +  "\n");
-
-			for(WordAppearance appearance : searchWord) {
-				int bookId = 0;
-
-				for(int appearanceId = 0; appearanceId < parsedBooks.size(); appearanceId++){ // get book Id from the search term
-					if(parsedBooks.get(appearanceId).getTitle().equals(appearance.getBook())){
-						bookId = appearanceId;
-					}
-				}
-
-				sb.append(appearance.getBook() + " [" + appearance.getChapter() + ":" + appearance.getVerse() + "]: "
-						+ parsedBooks.get(bookId).getChapter(appearance.getChapter()).getVerse(appearance.getVerse()-1).getText() + " \n"); // log the appearance in the StringBuilder 
-			} 
-		} else {
-			sb.append("Word not found!");
-		}
-
-		System.out.println("\n" + sb);
-		
-		long endtime = System.currentTimeMillis();
-		
-		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(starttime, endSearch));
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(starttime, endtime));
-	}
-
-	/**
-	 * Searches through books to find the verse which is needed
-	 * 
-	 * @author Ash
-	 */
-	public void lookupVerse(int bookId, int chapterNumber, int verseNumber) {
-		StringBuilder sb = new StringBuilder();
-
-		long startTime = System.currentTimeMillis();
-
-		try {
-			Verse answer = parsedBooks.get(bookId).getChapter(chapterNumber).getVerse(verseNumber-1);
-			sb.append("Verse: " + answer.getText() + "\n"); // pull in verse from parameters in method
-		} catch (Exception e) {
-			sb.append("Book/chapter/verse number is incorrect.\n");
-		}
-
-		long endSearch = System.currentTimeMillis();
-
-		System.out.println("\n" + sb); // print out results
-		
-		long endTime = System.currentTimeMillis();
-		
-		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
-	}
-
-	/**
-	 * Searches through books to find the chapters which refer to the book and chapter number 
-	 * 
-	 * @author Chaz
-	 */
-	public void lookupChapter(int bookId, int chapterNumber) {
-		if(bookId >= 0 && chapterNumber > 0) {
-			StringBuilder sb = new StringBuilder();
-
-			long startTime = System.currentTimeMillis();
-			long endSearch = startTime;
-
-			try {
-				Chapter chapterFound = parsedBooks.get(bookId).getChapter(chapterNumber);
-				List<Verse> v = chapterFound.getVerses();
-				
-				endSearch = System.currentTimeMillis();
-
-				sb.append("Chapter " + (chapterFound.getChapterNumber()+1) + "\n");				
-				if(chapterFound.getDescription() != null) // if there is a description, add this to the chapter printout
-					sb.append("Description: " + chapterFound.getDescription() + "\n");
-
-				for(Verse verse : v) {
-					sb.append(verse.getText() + "\n"); // print out each verse
-				}
-			} catch (Exception e) {
-				sb.append("Invalid chapter or book number");
-			}
-			
-			System.out.println("\n" + sb);
-			
-			long endTime = System.currentTimeMillis();
-			
-			System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
-			System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
-		} else {
-			System.out.println("Please enter a valid book ID and/or chapter number.\n");
-		}
-	}
-
-
-	/**
-	 * Searches through books and finds occurrences of search terms.
-	 * 
-	 * @param statementToSearch search term
-	 * @author Alex
-	 */
-	public void search(String statementToSearch) {
-		StringBuilder sb = new StringBuilder();
-
-		long startTime = System.currentTimeMillis();
-		List<WordAppearance> appearances = wordIndex.getAppearances(statementToSearch);
-		long endSearch = System.currentTimeMillis();
-
-		if(appearances != null && appearances.size() != 0) {
-			sb.append("\"" + statementToSearch + "\" found! Occurances: " + appearances.size() + "\n");
-
-			for(WordAppearance appearance : appearances)
-				sb.append(appearance);
-			
-			sb.append("Occurances: " + appearances.size() + "\n");
-		} else {
-			sb.append("No search results found.\n");
-		}
-		
-		System.out.println("\n" + sb);
-
-		long endTime = System.currentTimeMillis();
-		
-		System.out.println("TIME TAKEN TO SEARCH: " + getTimerText(startTime, endSearch));
-		System.out.println("TIME TAKEN TO SEARCH AND PRINT: " + getTimerText(startTime, endTime));
-	}
 	
-	private String getTimerText(long startTime, long endTime) {
-		long totalTime = endTime - startTime;
-		
-		return (totalTime == 0) ? "<0 milliseconds" : totalTime + " milliseconds"; // if 0ms, print <0, else the actual ms
-	}
+
+	
+
+	
+
+	
+
+
+	
+	
+	
 }
